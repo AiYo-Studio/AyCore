@@ -1,0 +1,64 @@
+package com.mc9y.blank038api.util.common;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * @author Blank038
+ * @since 2021-04-26
+ */
+public class CommonUtil {
+
+    /**
+     * 将 String 转换为槽位数组
+     *
+     * @param text 目标文本
+     * @return 槽位数组
+     */
+    public static Integer[] formatSlots(String text) {
+        if (text == null) {
+            return new Integer[0];
+        }
+        if (text.contains(",")) {
+            List<Integer> list = new ArrayList<>();
+            for (String s : text.split(",")) {
+                list.addAll(Arrays.asList(formatSlots(s)));
+            }
+            return list.toArray(new Integer[0]);
+        } else if (text.contains("-")) {
+            String[] split = text.split("-");
+            int n1 = Integer.parseInt(split[0]), n2 = Integer.parseInt(split[1]);
+            int min = Math.min(n1, n2), max = Math.max(n1, n2);
+            Integer[] result = new Integer[max - min + 1];
+            for (int index = 0, temp = min; temp <= max; temp++, index++) {
+                result[index] = temp;
+            }
+            return result;
+        } else {
+            return new Integer[]{Integer.parseInt(text)};
+        }
+    }
+
+    public static void outputFileTool(InputStream in, File file) {
+        try {
+            if (!file.getParentFile().exists()) {
+                Files.createDirectory(file.getParentFile().toPath());
+            }
+            if (!file.exists()) {
+                Files.createFile(file.toPath());
+            }
+            OutputStream out = new FileOutputStream(file);
+            byte[] b = new byte[1024];
+            int length;
+            while ((length = in.read(b)) != -1) {
+                out.write(b, 0, length);
+            }
+            out.close();
+            in.close();
+        } catch (IOException ignored) {
+        }
+    }
+}

@@ -1,0 +1,14 @@
+# 语言文件名
+lang: zh_CN
+# 旧版词条
+old: false
+# 文本配置
+text:
+  shiny:
+    true: "是"
+    false: "否"
+  error: "无"
+  gender:
+    none: "未知"
+    male: "公"
+    female: "母"

@@ -1,0 +1,10 @@
+name: PokemonAPI
+main: com.mc9y.blank038api.Blank038API
+authors:
+  - Blank038
+  - Laotou
+version: ${version}
+softdepend:
+  - PokePlate
+api-version: 1.13
+load: STARTUP
