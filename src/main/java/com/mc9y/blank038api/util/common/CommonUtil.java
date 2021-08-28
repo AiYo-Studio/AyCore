@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Blank038
@@ -60,5 +61,16 @@ public class CommonUtil {
             in.close();
         } catch (IOException ignored) {
         }
+    }
+
+    /**
+     * 匹配列表文本开头是否匹配, 不区分大小写
+     *
+     * @param list  目标列表
+     * @param start 开头文本
+     * @return 返回列表
+     */
+    public static List<String> matchStart(List<String> list, String start) {
+        return list.stream().filter((s) -> s.toLowerCase().startsWith(start.toLowerCase())).collect(Collectors.toList());
     }
 }

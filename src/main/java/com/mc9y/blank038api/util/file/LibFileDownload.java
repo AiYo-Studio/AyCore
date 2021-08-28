@@ -53,17 +53,20 @@ public class LibFileDownload {
     public void deny() {
     }
 
-    public void load() {
+    public boolean load() {
         Method method = null;
         try {
-            method = Blank038API.class.getClassLoader().getClass().getDeclaredMethod("addURL", URL.class);
+            method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
             method.setAccessible(true);
             method.invoke(Blank038API.class.getClassLoader(), file.toURI().toURL());
-        } catch (MalformedURLException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+        } catch (MalformedURLException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            return false;
         } finally {
             if (method != null) {
                 method.setAccessible(false);
             }
         }
+        return true;
     }
 }

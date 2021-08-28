@@ -1,10 +1,11 @@
 package com.mc9y.blank038api.util.key;
 
+import com.google.gson.JsonObject;
+import com.mc9y.blank038api.Blank038API;
 import com.mc9y.blank038api.event.KeyEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.json.JSONObject;
 
 /**
  * @author Blank038
@@ -19,9 +20,9 @@ public class KeyListener implements PluginMessageListener {
                 return;
             }
             try {
-                JSONObject jsonObject = new JSONObject(message);
+                JsonObject jsonObject = Blank038API.GSON.fromJson(message, JsonObject.class);
                 if (jsonObject.has("key") && jsonObject.has("down")) {
-                    KeyEvent keyEvent = new KeyEvent(player, jsonObject.getInt("key"), jsonObject.getBoolean("down"));
+                    KeyEvent keyEvent = new KeyEvent(player, jsonObject.get("key").getAsInt(), jsonObject.get("down").getAsBoolean());
                     Bukkit.getPluginManager().callEvent(keyEvent);
                 }
             } catch (Exception ignored) {

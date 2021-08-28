@@ -17,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -125,8 +126,9 @@ public class GuiModel implements InventoryHolder, Listener {
         }
         // 关闭界面
         if (close) {
-            for (HumanEntity player : new ArrayList<>(inventory.getViewers())) {
-                player.closeInventory();
+            Iterator<HumanEntity> iterator = inventory.getViewers().iterator();
+            while (iterator.hasNext()) {
+                iterator.next().closeInventory();
             }
         }
     }

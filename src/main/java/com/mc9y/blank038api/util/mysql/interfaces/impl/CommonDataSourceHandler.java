@@ -15,12 +15,12 @@ public class CommonDataSourceHandler extends AbstractDataSourceHandlerImpl {
 
     public CommonDataSourceHandler(JavaPlugin plugin, String url, String user, String password) {
         super(plugin);
-        this.setData(url, user, password);
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        this.setData(url, user, password);
     }
 
     @Override

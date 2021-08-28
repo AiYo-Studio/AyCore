@@ -1,5 +1,6 @@
 package com.mc9y.blank038api;
 
+import com.google.gson.*;
 import com.mc9y.blank038api.command.BlankCommand;
 import com.mc9y.blank038api.command.registry.CommandRegistry;
 import com.mc9y.blank038api.listener.PluginStatusListener;
@@ -17,8 +18,6 @@ import com.mc9y.pokemonapi.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Blank038
@@ -38,12 +38,13 @@ public class Blank038API extends JavaPlugin {
     private static Blank038API blank038API;
     private static PokemonAPI pokemonAPI;
     private static CommandRegistry commandRegistry;
+    public static final Gson GSON = new GsonBuilder().create();
 
     private LoggerUtil loggerUtil;
     private KeyChannel keyChannel;
     private INMSClass nmsClass;
     public HashMap<Plugin, PluginData> dataMap = new HashMap<>();
-    public JSONObject libJson = new JSONObject();
+    public JsonObject libJson = new JsonObject();
 
     /**
      * 获得 Blank038API 主类实例
@@ -177,38 +178,42 @@ public class Blank038API extends JavaPlugin {
         libFolder.mkdir();
         // 开始加载 Kotlin 依赖
         if (libJson.has("lib")) {
-            JSONObject lib = libJson.getJSONObject("lib");
-            for (String name : lib.keySet()) {
-                JSONObject target = lib.getJSONObject(name);
-                if (pokemonAPI.hasClass(target.getString("class"))) {
-                    LoggerUtil.getOrRegister(Blank038API.class).log("&f依赖 &a" + name + " &f已被加载, 取消检测.");
+            JsonObject lib = libJson.getAsJsonObject("lib");
+            for (Map.Entry<String, JsonElement> entry : lib.entrySet()) {
+                JsonObject target = entry.getValue().getAsJsonObject();
+                if (pokemonAPI.hasClass(target.get("class").getAsString())) {
+                    LoggerUtil.getOrRegister(Blank038API.class).log("&f依赖 &a" + entry.getKey() + " &f已被加载, 取消检测.");
                     continue;
                 }
-                File file = new File(libFolder, target.getString("file"));
-                String url = target.getString("url").replace("$lib-name", target.getString("file"));
+                File file = new File(libFolder, target.get("file").getAsString());
+                String url = target.get("url").getAsString().replace("$lib-name", target.get("file").getAsString());
                 if (!file.exists()) {
                     new LibFileDownload(url, file) {
                         @Override
                         public void success() {
-                            LoggerUtil.getOrRegister(Blank038API.class).log("&f成功下载依赖 &a" + name);
+                            LoggerUtil.getOrRegister(Blank038API.class).log("&f成功下载依赖 &a" + entry.getKey());
                         }
 
                         @Override
                         public void deny() {
-                            LoggerUtil.getOrRegister(Blank038API.class).log("&c下载依赖 &f" + name + " &c失败");
+                            LoggerUtil.getOrRegister(Blank038API.class).log("&c下载依赖 &f" + entry.getKey() + " &c失败");
                         }
                     }.start();
                 } else {
-                    new LibFileDownload(url, file).load();
-                    LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载依赖 &a" + name);
+                    boolean result = new LibFileDownload(url, file).load();
+                    if (result) {
+                        LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载依赖 &a" + entry.getKey());
+                    } else {
+                        LoggerUtil.getOrRegister(Blank038API.class).log("&c加载依赖 &f" + entry.getKey() + " &c失败");
+                    }
                 }
             }
         }
         if (libJson.has("load")) {
-            JSONArray lib = libJson.getJSONArray("load");
-            for (int i = 0; i < lib.length(); i++) {
+            JsonArray lib = libJson.getAsJsonArray("load");
+            for (int i = 0; i < lib.size(); i++) {
                 try {
-                    String target = lib.getString(i);
+                    String target = lib.get(i).getAsString();
                     Class<?> c = Class.forName(target);
                     Method method = c.getMethod("onEnable");
                     method.invoke(c);
@@ -259,7 +264,7 @@ public class Blank038API extends JavaPlugin {
                 json.append(text);
             }
             is.close();
-            libJson = new JSONObject(json.toString());
+            libJson = Blank038API.GSON.fromJson(json.toString(), JsonObject.class);
             LoggerUtil.getOrRegister(Blank038API.class).log("&f成功拉取依赖资源下载链接");
         } catch (Exception ignored) {
             LoggerUtil.getOrRegister(Blank038API.class).log("&c依赖资源下载链接拉取失败");

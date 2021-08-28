@@ -3,8 +3,6 @@ package com.mc9y.pokemonapi.api.pokemon;
 import com.mc9y.blank038api.Blank038API;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.battles.controller.BattleControllerBase;
-import com.pixelmonmod.pixelmon.battles.rules.BattleRules;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
