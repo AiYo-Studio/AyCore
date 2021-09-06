@@ -2,8 +2,8 @@ package com.mc9y.blank038api.util.file;
 
 import com.mc9y.blank038api.Blank038API;
 import com.mc9y.blank038api.interfaces.CustomExecute;
-import com.mc9y.blank038api.model.ModifyData;
-import com.mc9y.blank038api.model.PluginData;
+import com.mc9y.blank038api.model.common.ModifyData;
+import com.mc9y.blank038api.model.common.PluginData;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;

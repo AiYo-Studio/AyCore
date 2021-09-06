@@ -1,5 +1,7 @@
 package com.mc9y.blank038api.util.common;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -14,7 +16,12 @@ import java.util.stream.Collectors;
 public class CommonUtil {
 
     /**
-     * 将 String 转换为槽位数组
+     * 将 String 转换为槽位数组, 允许拼接
+     * 支持格式:
+     * (1): 纯数字
+     * (2): 数字,数字
+     * (3): 最小数-最大数
+     * 例子: 0,1,2,3,4-10
      *
      * @param text 目标文本
      * @return 槽位数组
@@ -43,6 +50,12 @@ public class CommonUtil {
         }
     }
 
+    /**
+     * 将输入流写入指定文件
+     *
+     * @param in   源输入流
+     * @param file 目标文件
+     */
     public static void outputFileTool(InputStream in, File file) {
         try {
             if (!file.getParentFile().exists()) {
@@ -61,6 +74,17 @@ public class CommonUtil {
             in.close();
         } catch (IOException ignored) {
         }
+    }
+
+    /**
+     * 将插件资源以输入流写入指定文件
+     *
+     * @param plugin 源插件
+     * @param source 源地址(Resource Path)
+     * @param target 目标地址(Target Path)
+     */
+    public static void saveResource(JavaPlugin plugin, String source, String target) {
+        CommonUtil.outputFileTool(plugin.getResource(source), new File(plugin.getDataFolder(), target));
     }
 
     /**

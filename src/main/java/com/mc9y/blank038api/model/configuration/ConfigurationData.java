@@ -1,4 +1,4 @@
-package com.mc9y.blank038api.model;
+package com.mc9y.blank038api.model.configuration;
 
 import org.bukkit.configuration.file.FileConfiguration;
 

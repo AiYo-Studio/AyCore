@@ -5,7 +5,7 @@ import com.mc9y.blank038api.command.BlankCommand;
 import com.mc9y.blank038api.command.registry.CommandRegistry;
 import com.mc9y.blank038api.listener.CommandListener;
 import com.mc9y.blank038api.listener.PluginStatusListener;
-import com.mc9y.blank038api.model.PluginData;
+import com.mc9y.blank038api.model.common.PluginData;
 import com.mc9y.blank038api.nms.sub.v1_12_R1;
 import com.mc9y.blank038api.nms.sub.v1_16_R1;
 import com.mc9y.blank038api.thread.ThreadProcessor;
@@ -28,7 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

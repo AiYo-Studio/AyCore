@@ -1,7 +1,7 @@
 package com.mc9y.blank038api.listener;
 
 import com.mc9y.blank038api.Blank038API;
-import com.mc9y.blank038api.model.PluginData;
+import com.mc9y.blank038api.model.common.PluginData;
 import com.mc9y.blank038api.thread.ThreadProcessor;
 import com.mc9y.blank038api.util.file.ModifyListener;
 import org.bukkit.event.EventHandler;

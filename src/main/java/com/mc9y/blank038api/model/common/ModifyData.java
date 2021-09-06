@@ -1,4 +1,4 @@
-package com.mc9y.blank038api.model;
+package com.mc9y.blank038api.model.common;
 
 import com.mc9y.blank038api.interfaces.CustomExecute;
 import org.bukkit.Bukkit;

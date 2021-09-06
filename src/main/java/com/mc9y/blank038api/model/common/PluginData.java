@@ -1,6 +1,7 @@
-package com.mc9y.blank038api.model;
+package com.mc9y.blank038api.model.common;
 
 import com.mc9y.blank038api.Blank038API;
+import com.mc9y.blank038api.model.configuration.ConfigurationData;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
