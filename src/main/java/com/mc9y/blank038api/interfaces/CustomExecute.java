@@ -1,7 +1,12 @@
 package com.mc9y.blank038api.interfaces;
 
-@FunctionalInterface
-public interface CustomExecute {
+import java.io.File;
 
-    void run();
+/**
+ * @author Blank038
+ */
+@FunctionalInterface
+public interface CustomExecute<T> {
+
+    void run(T file);
 }

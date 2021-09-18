@@ -1,13 +1,14 @@
 package com.mc9y.blank038api.util.mysql;
 
 import com.mc9y.blank038api.Blank038API;
-import com.mc9y.blank038api.util.mysql.execute.ExecuteModel;
+import com.mc9y.blank038api.interfaces.CustomExecute;
 import com.mc9y.blank038api.util.mysql.interfaces.AbstractDataSourceHandlerImpl;
 import com.mc9y.blank038api.util.mysql.interfaces.impl.CommonDataSourceHandler;
 import com.mc9y.blank038api.util.mysql.interfaces.impl.HikariDataSourceHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -95,7 +96,7 @@ public class MySqlStorageHandler {
         }, sql);
     }
 
-    public void connect(ExecuteModel executeModel, String sql) {
+    public void connect(CustomExecute<PreparedStatement> executeModel, String sql) {
         this.DATA_SOURCE.connect(executeModel, sql);
     }
 }

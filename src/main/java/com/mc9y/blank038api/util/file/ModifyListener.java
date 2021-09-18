@@ -24,7 +24,7 @@ public class ModifyListener {
      * @param async   是否异步
      * @param files   监听文件
      */
-    public static void addListener(Plugin plugin, CustomExecute execute, boolean async, File... files) {
+    public static void addListener(Plugin plugin, CustomExecute<ModifyData> execute, boolean async, File... files) {
         new ModifyData(Blank038API.getBlank038API().dataMap.getOrDefault(plugin,
                 Blank038API.getBlank038API().dataMap.put(plugin, new PluginData(plugin))), files, execute, async);
     }

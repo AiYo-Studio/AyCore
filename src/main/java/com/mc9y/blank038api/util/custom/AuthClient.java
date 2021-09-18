@@ -20,12 +20,12 @@ public class AuthClient {
 
     private final JavaPlugin SOURCE_PLUGIN;
     private final String SERVER_IP, AUTH_KEY, CHECK_VER_URL;
-    private final CustomExecute CUSTOM_EXECUTE;
+    private final CustomExecute<Boolean> CUSTOM_EXECUTE;
     private final int SERVER_PORT;
     private boolean auth;
     private int reconnCount = 1;
 
-    public AuthClient(JavaPlugin plugin, String serverIp, int port, String key, String checkVerUrl, CustomExecute execute) {
+    public AuthClient(JavaPlugin plugin, String serverIp, int port, String key, String checkVerUrl, CustomExecute<Boolean> execute) {
         this.SOURCE_PLUGIN = plugin;
         this.SERVER_IP = serverIp;
         this.CHECK_VER_URL = checkVerUrl;
@@ -107,7 +107,7 @@ public class AuthClient {
                         case Allow:
                             try {
                                 // 执行的内容
-                                this.CUSTOM_EXECUTE.run();
+                                this.CUSTOM_EXECUTE.run(true);
                                 // 公告及版本检测
                                 Bukkit.getConsoleSender().sendMessage("§f > §a校验成功, 插件启动, 感谢支持正版");
                                 // 检查插件版本

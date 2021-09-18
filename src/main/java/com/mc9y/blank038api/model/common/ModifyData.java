@@ -15,12 +15,12 @@ import java.util.Map;
  */
 public class ModifyData {
     private final HashMap<File, Long> modifyMap = new HashMap<>();
-    private final CustomExecute execute;
+    private final CustomExecute<ModifyData> execute;
     private final boolean async;
     private final PluginData pluginData;
     private long lastModify = System.currentTimeMillis();
 
-    public ModifyData(PluginData pluginData, File[] files, CustomExecute execute, boolean async) {
+    public ModifyData(PluginData pluginData, File[] files, CustomExecute<ModifyData> execute, boolean async) {
         for (File i : files) {
             modifyMap.put(i, i.lastModified());
         }
@@ -44,9 +44,9 @@ public class ModifyData {
         }
         if (run) {
             if (async) {
-                execute.run();
+                execute.run(this);
             } else {
-                Bukkit.getScheduler().runTask(pluginData.getPlugin(), execute::run);
+                Bukkit.getScheduler().runTask(pluginData.getPlugin(), () -> execute.run(this));
             }
         }
     }
@@ -65,7 +65,7 @@ public class ModifyData {
      *
      * @return 执行器
      */
-    public CustomExecute getExecute() {
+    public CustomExecute<ModifyData> getExecute() {
         return execute;
     }
 }

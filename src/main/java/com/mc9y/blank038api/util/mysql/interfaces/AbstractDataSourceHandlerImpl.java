@@ -1,6 +1,6 @@
 package com.mc9y.blank038api.util.mysql.interfaces;
 
-import com.mc9y.blank038api.util.mysql.execute.ExecuteModel;
+import com.mc9y.blank038api.interfaces.CustomExecute;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
@@ -27,7 +27,7 @@ public abstract class AbstractDataSourceHandlerImpl implements IDataSourceHandle
         this.SQL_PASSWORD = password;
     }
 
-    public void connect(ExecuteModel executeModel, String sql) {
+    public void connect(CustomExecute<PreparedStatement> executeModel, String sql) {
         if (this.SOURCE_PLUGIN == null || !this.SOURCE_PLUGIN.isEnabled()) {
             return;
         }

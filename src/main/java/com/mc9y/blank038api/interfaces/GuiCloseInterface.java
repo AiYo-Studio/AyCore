@@ -2,6 +2,9 @@ package com.mc9y.blank038api.interfaces;
 
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
+/**
+ * @author Blank038
+ */
 @FunctionalInterface
 public interface GuiCloseInterface {
 

@@ -1,5 +1,6 @@
 package com.mc9y.blank038api.util.common;
 
+import com.mc9y.blank038api.interfaces.CustomExecute;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -79,12 +80,24 @@ public class CommonUtil {
     /**
      * 将插件资源以输入流写入指定文件
      *
-     * @param plugin 源插件
-     * @param source 源地址(Resource Path)
-     * @param target 目标地址(Target Path)
+     * @param plugin   源插件
+     * @param source   源地址(Resource Path)
+     * @param target   目标地址(Target Path)
+     * @param execute 文件执行器
      */
-    public static void saveResource(JavaPlugin plugin, String source, String target) {
-        CommonUtil.outputFileTool(plugin.getResource(source), new File(plugin.getDataFolder(), target));
+    public static void saveResource(JavaPlugin plugin, String source, String target, boolean replace, CustomExecute<File> execute) {
+        File file = new File(plugin.getDataFolder(), target);
+        boolean exists = file.exists();
+        if (exists && !replace) {
+            if (execute != null) {
+                execute.run(file);
+            }
+            return;
+        }
+        CommonUtil.outputFileTool(plugin.getResource(source), file);
+        if (execute != null) {
+            execute.run(file);
+        }
     }
 
     /**
