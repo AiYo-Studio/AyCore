@@ -15,7 +15,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -120,7 +119,7 @@ public class GuiModel implements InventoryHolder, Listener {
         this.listener = true;
     }
 
-    public void unregisterListener(boolean close) {
+    public synchronized void unregisterListener(boolean close) {
         if (this.listener) {
             HandlerList.unregisterAll(this);
         }

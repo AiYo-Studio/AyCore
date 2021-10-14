@@ -7,6 +7,7 @@ import com.mc9y.pokemonapi.api.pokemon.PokemonUtil;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
 import com.pixelmonmod.pixelmon.battles.attacks.AttackBase;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -24,10 +25,10 @@ public class StatsHelper {
     public HashMap<EnumStats, Object> getPokeStats(Pokemon pokemon) {
         HashMap<EnumStats, Object> pshm = new HashMap<>();
         DecimalFormat df = new DecimalFormat("#0.##");
-        int ivSum = pokemon.getStats().ivs.hp + pokemon.getStats().ivs.attack + pokemon.getStats().ivs.defence +
-                pokemon.getStats().ivs.specialAttack + pokemon.getStats().ivs.specialDefence + pokemon.getStats().ivs.speed;
-        int evSum = pokemon.getStats().evs.hp + pokemon.getStats().evs.attack + pokemon.getStats().evs.defence +
-                pokemon.getStats().evs.specialAttack + pokemon.getStats().evs.specialDefence + pokemon.getStats().evs.speed;
+        int ivSum = pokemon.getIVs().getStat(StatsType.HP) + pokemon.getIVs().getStat(StatsType.Attack) + pokemon.getIVs().getStat(StatsType.Defence) +
+                pokemon.getIVs().getStat(StatsType.SpecialAttack) + pokemon.getIVs().getStat(StatsType.SpecialDefence) + pokemon.getIVs().getStat(StatsType.Speed);
+        int evSum = pokemon.getEVs().getStat(StatsType.HP) + pokemon.getEVs().getStat(StatsType.Attack) + pokemon.getEVs().getStat(StatsType.Defence) +
+                pokemon.getEVs().getStat(StatsType.SpecialAttack) + pokemon.getEVs().getStat(StatsType.SpecialDefence) + pokemon.getEVs().getStat(StatsType.Speed);
         String totalEVs = df.format((int) (evSum / 510.0 * 100.0)) + "%";
         String totalIVs = df.format((int) (ivSum / 186.0 * 100.0)) + "%";
         String nickname = (pokemon.getNickname() == null) ? pa.getLang().getString("pixelmon."
@@ -49,18 +50,18 @@ public class StatsHelper {
                     getAttackBase(pokemon.getMoveset().get(i)).toLowerCase() + ".name")) : nullOption);
         }
 
-        pshm.put(EnumStats.IVS_HP, pokemon.getIVs().hp);
-        pshm.put(EnumStats.IVS_Attack, pokemon.getIVs().attack);
-        pshm.put(EnumStats.IVS_Speed, pokemon.getIVs().speed);
-        pshm.put(EnumStats.IVS_Defence, pokemon.getIVs().defence);
-        pshm.put(EnumStats.IVS_SpecialAttack, pokemon.getIVs().specialAttack);
-        pshm.put(EnumStats.IVS_SpecialDefence, pokemon.getIVs().specialDefence);
-        pshm.put(EnumStats.EVS_HP, pokemon.getEVs().hp);
-        pshm.put(EnumStats.EVS_Attack, pokemon.getEVs().attack);
-        pshm.put(EnumStats.EVS_Speed, pokemon.getEVs().speed);
-        pshm.put(EnumStats.EVS_Defence, pokemon.getEVs().defence);
-        pshm.put(EnumStats.EVS_SpecialAttack, pokemon.getEVs().specialAttack);
-        pshm.put(EnumStats.EVS_SpecialDefence, pokemon.getEVs().specialDefence);
+        pshm.put(EnumStats.IVS_HP, pokemon.getIVs().getStat(StatsType.HP));
+        pshm.put(EnumStats.IVS_Attack, pokemon.getIVs().getStat(StatsType.Attack));
+        pshm.put(EnumStats.IVS_Speed, pokemon.getIVs().getStat(StatsType.Speed));
+        pshm.put(EnumStats.IVS_Defence, pokemon.getIVs().getStat(StatsType.Defence));
+        pshm.put(EnumStats.IVS_SpecialAttack, pokemon.getIVs().getStat(StatsType.SpecialAttack));
+        pshm.put(EnumStats.IVS_SpecialDefence, pokemon.getIVs().getStat(StatsType.SpecialDefence));
+        pshm.put(EnumStats.EVS_HP, pokemon.getEVs().getStat(StatsType.HP));
+        pshm.put(EnumStats.EVS_Attack, pokemon.getEVs().getStat(StatsType.Attack));
+        pshm.put(EnumStats.EVS_Speed, pokemon.getEVs().getStat(StatsType.Speed));
+        pshm.put(EnumStats.EVS_Defence, pokemon.getEVs().getStat(StatsType.Defence));
+        pshm.put(EnumStats.EVS_SpecialAttack, pokemon.getEVs().getStat(StatsType.SpecialAttack));
+        pshm.put(EnumStats.EVS_SpecialDefence, pokemon.getEVs().getStat(StatsType.SpecialDefence));
         pshm.put(EnumStats.Level, level);
         pshm.put(EnumStats.Owner, pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getDisplayNameString() : "无");
         pshm.put(EnumStats.Shiny, shiny);

@@ -7,6 +7,7 @@ import com.mc9y.pokemonapi.api.lang.Lang;
 import com.mc9y.pokemonapi.api.sprite.SpriteHelper;
 import com.mc9y.pokemonapi.api.stats.StatsHelper;
 import com.mc9y.pokemonapi.listener.CatServerModel;
+import com.mc9y.pokemonapi.listener.IForgeListener;
 import com.mc9y.pokemonapi.listener.MagmaModel;
 import com.mc9y.pokemonapi.listener.MohistModel;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ import java.lang.reflect.Field;
 @SuppressWarnings("unused")
 public class PokemonAPI {
     public static boolean old;
+    private IForgeListener forgeListener;
     private Lang lang;
     private SpriteHelper sh;
     private StatsHelper statsHelper;
@@ -79,6 +81,10 @@ public class PokemonAPI {
         return sh;
     }
 
+    public IForgeListener getForgeListener() {
+        return this.forgeListener;
+    }
+
     /**
      * 获取当前 Pixelmon 目标类型
      * 仅会检测: PixelmonReforged(重铸), PixelmonGenerations(世代), None(无)
@@ -99,14 +105,15 @@ public class PokemonAPI {
     }
 
     public void inject() {
-        if (hasClass("catserver.api.bukkit.event.ForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents(new CatServerModel(), Blank038API.getBlank038API());
+        boolean forward = Blank038API.getBlank038API().getConfig().getBoolean("forward_forge_event", true);
+        if (forward && this.hasClass("catserver.api.bukkit.event.ForgeEvent")) {
+            Bukkit.getPluginManager().registerEvents((forgeListener = new CatServerModel()), Blank038API.getBlank038API());
             LoggerUtil.getOrRegister(Blank038API.class).log("&f载入挂钩核心: §aCatServer");
-        } else if (hasClass("red.mohist.api.event.BukkitHookForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents(new MohistModel(), Blank038API.getBlank038API());
+        } else if (forward && this.hasClass("red.mohist.api.event.BukkitHookForgeEvent")) {
+            Bukkit.getPluginManager().registerEvents((forgeListener = new MohistModel()), Blank038API.getBlank038API());
             LoggerUtil.getOrRegister(Blank038API.class).log("&f载入挂钩核心: §aMohist");
-        } else if (hasClass("org.magmafoundation.magma.api.events.ForgeEvents")) {
-            Bukkit.getPluginManager().registerEvents(new MagmaModel(), Blank038API.getBlank038API());
+        } else if (forward && this.hasClass("org.magmafoundation.magma.api.events.ForgeEvents")) {
+            Bukkit.getPluginManager().registerEvents((forgeListener = new MagmaModel()), Blank038API.getBlank038API());
             LoggerUtil.getOrRegister(Blank038API.class).log("&f载入挂钩核心: §aMagma");
         } else {
             LoggerUtil.getOrRegister(Blank038API.class).log("&f无挂钩核心载入");

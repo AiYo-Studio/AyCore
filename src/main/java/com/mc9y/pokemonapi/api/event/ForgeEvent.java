@@ -3,6 +3,10 @@ package com.mc9y.pokemonapi.api.event;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * @author Blank038
+ * @since 2021-10-24
+ */
 public class ForgeEvent extends Event {
     private static final HandlerList handler = new HandlerList();
     private net.minecraftforge.fml.common.eventhandler.Event event;

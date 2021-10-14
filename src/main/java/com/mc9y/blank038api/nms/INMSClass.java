@@ -130,7 +130,6 @@ public abstract class INMSClass {
         try {
             Field[] field = getClass ? obj.getClass().getFields() : ((Class<?>) obj).getFields();
             for (Field i : field) {
-                System.out.println(i.getName());
                 if (i.getName().equals(fieldName)) {
                     return i.get(obj);
                 }
