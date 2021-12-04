@@ -35,15 +35,14 @@ public class PokemonAPI {
         this.inject();
         switch ((enumPixelmon = getPixelmonType())) {
             case PIXELMON_REFORGED:
-                setupLang();
+                this.setupLang();
                 statsHelper = new StatsHelper(this);
                 sh = new SpriteHelper();
                 LoggerUtil.getOrRegister(Blank038API.class).log("&fPixelmonReforged 版本: &a" + getVersion(EnumPixelmon.PIXELMON_REFORGED));
                 LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载: &aPokemonAPI");
                 break;
             case PIXELMON_GENERATIONS:
-                setupLang();
-                // statsHelper = new StatsHelperPG(this);
+                this.setupLang();
                 LoggerUtil.getOrRegister(Blank038API.class).log("&fPixelmonGenerations 版本: &a" + getVersion(EnumPixelmon.PIXELMON_GENERATIONS));
                 LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载: &aPokemonAPI");
                 break;

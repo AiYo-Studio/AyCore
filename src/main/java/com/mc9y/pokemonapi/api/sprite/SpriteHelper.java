@@ -25,9 +25,6 @@ public class SpriteHelper {
      * @return 精灵相片物品
      */
     public ItemStack getSpriteItem(Pokemon pokemon) {
-        Player player = Bukkit.getPlayer("Blank038");
-        PlayerPartyStorage storage = Pixelmon.storageManager.getParty(player.getUniqueId());
-        storage.get(0);
 ///        net.minecraft.server.v1_12_R1.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
 //        NBTTagCompound compound = nmsitem.hasTag() ? nmsitem.getTag() : new NBTTagCompound();
 //        assert compound != null;

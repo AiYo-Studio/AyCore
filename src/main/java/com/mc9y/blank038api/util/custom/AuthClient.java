@@ -124,12 +124,14 @@ public class AuthClient {
                                     }
                                 }
                                 // 获取广告列表
-                                ADClient adClient = new ADClient("http://www.mc9y.com/auth/ad/");
+                                ADClient adClient = new ADClient("https://www.mc9y.com/auth/ad/");
                                 Bukkit.getConsoleSender().sendMessage("§f > §e广告列表:");
                                 for (String ad : adClient.getADList()) {
                                     Bukkit.getConsoleSender().sendMessage("§f  - " + ad);
                                 }
                             } catch (Exception e) {
+                                Bukkit.getConsoleSender().sendMessage("§f > §c校验失败, 请检查自己的配置");
+                                e.printStackTrace();
                                 break;
                             }
                             break;
@@ -156,8 +158,8 @@ public class AuthClient {
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
             Bukkit.getConsoleSender().sendMessage(" §f> §c出现异常错误, 尝试第 §f" + this.reconnCount + "§c 次重连.");
+            e.printStackTrace();
             return false;
         }
     }

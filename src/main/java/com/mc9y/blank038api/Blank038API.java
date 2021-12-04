@@ -8,18 +8,16 @@ import com.mc9y.blank038api.listener.PluginStatusListener;
 import com.mc9y.blank038api.model.common.PluginData;
 import com.mc9y.blank038api.nms.sub.v1_12_R1;
 import com.mc9y.blank038api.nms.sub.v1_16_R1;
+import com.mc9y.blank038api.plugin.AyPlugin;
 import com.mc9y.blank038api.thread.ThreadProcessor;
-import com.mc9y.blank038api.util.custom.LoggerUtil;
 import com.mc9y.blank038api.util.custom.VerCheck;
 import com.mc9y.blank038api.util.file.LibFileDownload;
-import com.mc9y.blank038api.util.file.ModifyListener;
 import com.mc9y.blank038api.util.key.KeyChannel;
 import com.mc9y.pokemonapi.PokemonAPI;
 import com.mc9y.blank038api.nms.INMSClass;
 import com.mc9y.pokemonapi.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,15 +34,15 @@ import java.util.Map;
  * @since 2021-03-16
  */
 @SuppressWarnings("unused")
-public class Blank038API extends JavaPlugin {
+public class Blank038API extends AyPlugin {
     private static Blank038API blank038API;
     private static PokemonAPI pokemonAPI;
     private static CommandRegistry commandRegistry;
     public static final Gson GSON = new GsonBuilder().create();
 
-    private LoggerUtil loggerUtil;
     private KeyChannel keyChannel;
     private INMSClass nmsClass;
+    private boolean sameHikariVersion;
     public HashMap<Plugin, PluginData> dataMap = new HashMap<>();
     public JsonObject libJson = new JsonObject();
 
@@ -94,22 +92,22 @@ public class Blank038API extends JavaPlugin {
         // 载入配置和注册核心内容
         this.loadConfig();
         // 载入依赖
-        this.loggerUtil = LoggerUtil.getOrRegister(Blank038API.class, "&f[&eBAPI&f] - ");
-        this.loggerUtil.log(false, " ");
-        this.loggerUtil.log(false, "   &3Blank038API &bv" + getDescription().getVersion());
-        this.loggerUtil.log(false, " ");
-        this.loggerUtil.log(false, "&f[&eBAPI&f] &6Blank038API //>");
+        this.getConsoleLogger().setPrefix("&f[&eBAPI&f] - ");
+        this.getConsoleLogger().log(false, " ");
+        this.getConsoleLogger().log(false, "   &3Blank038API &bv" + getDescription().getVersion());
+        this.getConsoleLogger().log(false, " ");
+        this.getConsoleLogger().log(false, "&f[&eBAPI&f] &6Blank038API //>");
         this.loadLibraries();
-        this.loggerUtil.log(false, " ");
+        this.getConsoleLogger().log(false, " ");
     }
 
     @Override
     public void onEnable() {
         // 开始输出
-        this.loggerUtil.log(false, " ");
-        this.loggerUtil.log(false, "   &3Blank038API &bv" + getDescription().getVersion());
-        this.loggerUtil.log(false, " ");
-        this.loggerUtil.log(false, "&f[&eBAPI&f] &6Blank038API //>");
+        this.getConsoleLogger().log(false, " ");
+        this.getConsoleLogger().log(false, "   &3Blank038API &bv" + getDescription().getVersion());
+        this.getConsoleLogger().log(false, " ");
+        this.getConsoleLogger().log(false, "&f[&eBAPI&f] &6Blank038API //>");
         // 初始化 PokemonAPI
         pokemonAPI.onLoad();
         this.init();
@@ -117,18 +115,18 @@ public class Blank038API extends JavaPlugin {
         new Metrics(this);
         VerCheck check = new VerCheck(this, "http://www.mc9y.com/checks/{plugin}.txt");
         if (check.isError()) {
-            this.loggerUtil.log("&f检测新版本异常, 不影响使用");
+            this.getConsoleLogger().log("&f检测新版本异常, 不影响使用");
         } else {
             if (check.isIdentical()) {
-                this.loggerUtil.log("&f插件已是最新版, 无需更新");
+                this.getConsoleLogger().log("&f插件已是最新版, 无需更新");
             } else {
-                this.loggerUtil.log("&f插件可更新, 最新版: &e" + check.getVersion());
+                this.getConsoleLogger().log("&f插件可更新, 最新版: &e" + check.getVersion());
             }
         }
         commandRegistry.registerCommand(this, new Object[]{new BlankCommand()}, new String[]{"nyapi"});
         // 开始监听
-        this.loggerUtil.log("&f插件加载完成, 感谢使用!");
-        this.loggerUtil.log(false, " ");
+        this.getConsoleLogger().log("&f插件加载完成, 感谢使用!");
+        this.getConsoleLogger().log(false, " ");
     }
 
     /**
@@ -167,10 +165,10 @@ public class Blank038API extends JavaPlugin {
                 this.setNMSClass(new v1_16_R1());
                 break;
             default:
-                LoggerUtil.getOrRegister(Blank038API.class).log("&f挂钩核心NMS: &c无挂钩");
+                this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
                 break;
         }
-        LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载: &aBlank038API");
+        this.getConsoleLogger().log("&f成功加载: &aBlank038API");
     }
 
     public void loadLibraries() {
@@ -185,7 +183,7 @@ public class Blank038API extends JavaPlugin {
             for (Map.Entry<String, JsonElement> entry : lib.entrySet()) {
                 JsonObject target = entry.getValue().getAsJsonObject();
                 if (pokemonAPI.hasClass(target.get("class").getAsString())) {
-                    LoggerUtil.getOrRegister(Blank038API.class).log("&f依赖 &a" + entry.getKey() + " &f已被加载, 取消检测.");
+                    this.getConsoleLogger().log("&f依赖 &a" + entry.getKey() + " &f已被加载, 取消检测.");
                     continue;
                 }
                 File file = new File(libFolder, target.get("file").getAsString());
@@ -194,20 +192,20 @@ public class Blank038API extends JavaPlugin {
                     new LibFileDownload(url, file) {
                         @Override
                         public void success() {
-                            LoggerUtil.getOrRegister(Blank038API.class).log("&f成功下载依赖 &a" + entry.getKey());
+                            Blank038API.this.getConsoleLogger().log("&f成功下载依赖 &a" + entry.getKey());
                         }
 
                         @Override
                         public void deny() {
-                            LoggerUtil.getOrRegister(Blank038API.class).log("&c下载依赖 &f" + entry.getKey() + " &c失败");
+                            Blank038API.this.getConsoleLogger().log("&c下载依赖 &f" + entry.getKey() + " &c失败");
                         }
                     }.start();
                 } else {
                     boolean result = new LibFileDownload(url, file).load();
                     if (result) {
-                        LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载依赖 &a" + entry.getKey());
+                        this.getConsoleLogger().log("&f成功加载依赖 &a" + entry.getKey());
                     } else {
-                        LoggerUtil.getOrRegister(Blank038API.class).log("&c加载依赖 &f" + entry.getKey() + " &c失败");
+                        this.getConsoleLogger().log("&c加载依赖 &f" + entry.getKey() + " &c失败");
                     }
                 }
             }
@@ -222,6 +220,16 @@ public class Blank038API extends JavaPlugin {
                     method.invoke(c);
                 } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
                 }
+            }
+        }
+        // 检测 HikariCP 可否使用
+        if (this.hasHikariCP()) {
+            try {
+                Class<?> c1 = Class.forName("com.zaxxer.hikari.HikariConfig");
+                Method method = c1.getMethod("copyStateTo", c1);
+                this.sameHikariVersion = (method != null);
+            } catch (ClassNotFoundException | NoSuchMethodException e) {
+                this.sameHikariVersion = false;
             }
         }
     }
@@ -249,10 +257,14 @@ public class Blank038API extends JavaPlugin {
         }
     }
 
+    public boolean isSameHikariVersion() {
+        return this.sameHikariVersion;
+    }
+
     private void setNMSClass(INMSClass nmsClass) {
         this.nmsClass = nmsClass;
         nmsClass.registerChannel(this);
-        LoggerUtil.getOrRegister(Blank038API.class).log("&f成功加载: &a" + nmsClass.getVID());
+        this.getConsoleLogger().log("&f成功加载: &a" + nmsClass.getVID());
     }
 
     private void initLibList() {
@@ -268,10 +280,9 @@ public class Blank038API extends JavaPlugin {
             }
             is.close();
             libJson = Blank038API.GSON.fromJson(json.toString(), JsonObject.class);
-            LoggerUtil.getOrRegister(Blank038API.class).log("&f成功拉取依赖资源下载链接");
+            this.getConsoleLogger().log("&f成功拉取依赖资源下载链接");
         } catch (Exception ignored) {
-            LoggerUtil.getOrRegister(Blank038API.class).log("&c依赖资源下载链接拉取失败");
+            this.getConsoleLogger().log("&c依赖资源下载链接拉取失败");
         }
     }
-
 }

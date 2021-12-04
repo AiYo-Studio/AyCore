@@ -1,5 +1,7 @@
 # 语言文件名
 lang: zh_CN
+# 是否启用 HikariCP 连接池
+hikari: true
 # 是否转发 ForgeEvent，如果关闭该设定会导致用到本插件 ForgeEvent 事件的插件失效
 # 但是不会再出现所谓的 '高占用' and '高耗时'
 forward_forge_event: true

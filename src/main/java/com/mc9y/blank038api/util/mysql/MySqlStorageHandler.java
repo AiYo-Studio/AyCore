@@ -20,26 +20,31 @@ import java.util.Arrays;
  * @since 2021-03-16
  */
 public class MySqlStorageHandler {
-    private final AbstractDataSourceHandlerImpl DATA_SOURCE;
+    private AbstractDataSourceHandlerImpl dataSource;
     private String queryTable;
     private boolean reconnection;
 
     public MySqlStorageHandler(JavaPlugin plugin, String url, String user, String password, String... initUpdateStatement) {
-        this.DATA_SOURCE = Blank038API.getBlank038API().hasHikariCP() ?
-                new HikariDataSourceHandler(plugin, url, user, password) : new CommonDataSourceHandler(plugin, url, user, password);
+        try {
+            this.dataSource = Blank038API.getBlank038API().hasHikariCP() && Blank038API.getBlank038API().isSameHikariVersion()
+                    && Blank038API.getBlank038API().getConfig().getBoolean("hikari", true)
+                    ? new HikariDataSourceHandler(plugin, url, user, password) : new CommonDataSourceHandler(plugin, url, user, password);
+        } catch (Exception ignored) {
+            this.dataSource = new CommonDataSourceHandler(plugin, url, user, password);
+        }
         // 执行初始语句
         Arrays.stream(initUpdateStatement).forEach(this::updateStatement);
         // 建立线程定时请求, 避免超时
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             if (reconnection) {
-                this.DATA_SOURCE.connect((statement) -> {
+                this.dataSource.connect((statement) -> {
                     ResultSet resultSet = null;
                     try {
                         resultSet = statement.executeQuery();
                     } catch (SQLException throwable) {
                         throwable.printStackTrace();
                     } finally {
-                        this.DATA_SOURCE.close(statement, resultSet);
+                        this.dataSource.close(statement, resultSet);
                     }
                 }, "show full columns from " + queryTable);
             }
@@ -52,7 +57,7 @@ public class MySqlStorageHandler {
      * @return 连接源对象
      */
     public AbstractDataSourceHandlerImpl getDataSource() {
-        return this.DATA_SOURCE;
+        return this.dataSource;
     }
 
     /**
@@ -87,7 +92,7 @@ public class MySqlStorageHandler {
     }
 
     public void updateStatement(String sql) {
-        this.DATA_SOURCE.connect((statement) -> {
+        this.dataSource.connect((statement) -> {
             try {
                 statement.executeUpdate();
             } catch (SQLException e) {
@@ -97,6 +102,6 @@ public class MySqlStorageHandler {
     }
 
     public void connect(CustomExecute<PreparedStatement> executeModel, String sql) {
-        this.DATA_SOURCE.connect(executeModel, sql);
+        this.dataSource.connect(executeModel, sql);
     }
 }

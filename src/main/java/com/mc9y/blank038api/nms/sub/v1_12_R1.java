@@ -2,6 +2,7 @@ package com.mc9y.blank038api.nms.sub;
 
 import com.mc9y.blank038api.nms.FMethodClass;
 import com.mc9y.blank038api.nms.INMSClass;
+import com.mc9y.blank038api.plugin.library.InjectLibraries;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Blank038
  */
+@InjectLibraries(value = {
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0-RC"
+})
 public class v1_12_R1 extends INMSClass implements FMethodClass {
 
     /**
