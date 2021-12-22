@@ -10,9 +10,9 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "3.2.0.13-SNAPSHOT"
-group = "com.mc9y.blank038api"
-archivesBaseName = "PokemonAPI"
+version = "4.0.1.1-SNAPSHOT"
+group = "com.aystudio.core"
+archivesBaseName = "AyCore"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
