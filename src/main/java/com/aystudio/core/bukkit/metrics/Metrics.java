@@ -1,4 +1,4 @@
-package com.aystudio.core.pixelmon.metrics;
+package com.aystudio.core.bukkit.metrics;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -17,3 +17,6 @@ text:
     none: "未知"
     male: "公"
     female: "母"
+  common:
+    true: "是"
+    false: "否"

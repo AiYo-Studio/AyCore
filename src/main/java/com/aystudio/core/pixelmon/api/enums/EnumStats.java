@@ -30,7 +30,9 @@ public enum EnumStats {
     OriginalTrainer,
     Ability_DES,
     TRANSLATE_NAME,
-    SPECIE_NAME;
+    SPECIE_NAME,
+    SPEC_FLAG_UNTRADEABLE,
+    SPEC_FLAG_UNBTREEDABLE;
 
     public static boolean has(String key) {
         try {

@@ -15,7 +15,7 @@ import com.aystudio.core.bukkit.util.file.LibFileDownload;
 import com.aystudio.core.bukkit.util.key.KeyChannel;
 import com.aystudio.core.pixelmon.PokemonAPI;
 import com.aystudio.core.bukkit.nms.INMSClass;
-import com.aystudio.core.pixelmon.metrics.Metrics;
+import com.aystudio.core.bukkit.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

@@ -77,6 +77,8 @@ public class StatsHelper {
         pshm.put(EnumStats.OriginalTrainer, originalTrainer);
         pshm.put(EnumStats.TRANSLATE_NAME, PokemonUtil.getPokemonName(pokemon.getSpecies()));
         pshm.put(EnumStats.SPECIE_NAME, pokemon.getSpecies().name());
+        pshm.put(EnumStats.SPEC_FLAG_UNTRADEABLE, AyCore.getBlank038API().getConfig().getString("text.common." + pokemon.hasSpecFlag("untradeable")));
+        pshm.put(EnumStats.SPEC_FLAG_UNBTREEDABLE, AyCore.getBlank038API().getConfig().getString("text.common." + pokemon.hasSpecFlag("unbreedable")));
         return pshm;
     }
 
