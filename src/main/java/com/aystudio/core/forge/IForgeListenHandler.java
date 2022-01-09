@@ -1,4 +1,4 @@
-package com.aystudio.core.pixelmon.listener;
+package com.aystudio.core.forge;
 
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Blank038
  * @since 2021-10-14
  */
-public interface IForgeListener extends Listener{
+public interface IForgeListenHandler extends Listener{
 
     void registerListener(Plugin plugin, Listener listener, EventPriority priority);
 
@@ -31,7 +31,7 @@ public interface IForgeListener extends Listener{
     class RegisterManager {
         public static final HashMap<Listener, List<Method>> METHOD_LIST = new HashMap<>();
 
-        static void registerMethods(Listener listener) {
+        public static void registerMethods(Listener listener) {
             Class<? extends Listener> listenerClass = listener.getClass();
             for (Method method : listenerClass.getDeclaredMethods()) {
                 if (method.getAnnotation(SubscribeEvent.class) != null) {

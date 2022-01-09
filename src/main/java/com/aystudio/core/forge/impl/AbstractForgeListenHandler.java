@@ -1,21 +1,29 @@
-package com.aystudio.core.pixelmon.listener;
+package com.aystudio.core.forge.impl;
 
-import com.aystudio.core.pixelmon.api.event.ForgeEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.event.*;
+import com.aystudio.core.bukkit.util.common.ReflectionUtil;
+import com.aystudio.core.forge.IForgeListenHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
-import red.mohist.api.event.BukkitHookForgeEvent;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @author Blank038
+ * @since 2022-01-09
+ */
+public class AbstractForgeListenHandler implements IForgeListenHandler {
+    private final String forgeMethod;
+    private Class<?> forgeEventClass;
 
-public class MohistModel implements IForgeListener {
-
-    @EventHandler
-    public void onForgeEvent(BukkitHookForgeEvent e) {
-        ForgeEvent forgeEvent = new ForgeEvent(e.getEvent());
-        Bukkit.getPluginManager().callEvent(forgeEvent);
+    public AbstractForgeListenHandler(String methodName, String className) {
+        this.forgeMethod = methodName;
+        try {
+            this.forgeEventClass = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -29,22 +37,23 @@ public class MohistModel implements IForgeListener {
                             return;
                         }
                         try {
-                            BukkitHookForgeEvent e = (BukkitHookForgeEvent) event;
-                            method.invoke(listener1, e.getEvent());
+                            method.invoke(listener1, ReflectionUtil.invoke(event, forgeMethod));
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
                     }));
                 }
             }, priority, plugin, false);
-            BukkitHookForgeEvent.getHandlerList().register(registeredListener);
+            Object eventObj = ReflectionUtil.invoke(forgeEventClass, "getHandlerList");
+            ReflectionUtil.invoke(eventObj, "register", new Class[]{RegisteredListener.class}, registeredListener);
         }
     }
 
     @Override
     public void unregisterListener(Plugin plugin, Listener listener) {
         if (RegisterManager.METHOD_LIST.containsKey(listener)) {
-            BukkitHookForgeEvent.getHandlerList().unregister(listener);
+            Object eventObj = ReflectionUtil.invoke(forgeEventClass, "getHandlerList");
+            ReflectionUtil.invoke(eventObj, "unregister", new Class[]{RegisteredListener.class}, listener);
         }
     }
 }

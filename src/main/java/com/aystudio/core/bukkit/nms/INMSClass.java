@@ -115,17 +115,6 @@ public abstract class INMSClass {
         return null;
     }
 
-    public Object invoke(Object obj, String methodName, Class<?>[] paramsClass, Object... params) {
-        try {
-            Class<?> c = obj.getClass();
-            Method method = c.getMethod(methodName, paramsClass);
-            method.invoke(obj, params);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public Object getField(Object obj, String fieldName, boolean getClass) {
         try {
             Field[] field = getClass ? obj.getClass().getFields() : ((Class<?>) obj).getFields();

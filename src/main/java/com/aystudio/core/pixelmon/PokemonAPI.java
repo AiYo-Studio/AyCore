@@ -1,15 +1,13 @@
 package com.aystudio.core.pixelmon;
 
 import com.aystudio.core.bukkit.AyCore;
+import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
 import com.aystudio.core.pixelmon.api.enums.EnumPixelmon;
 import com.aystudio.core.pixelmon.api.lang.Lang;
 import com.aystudio.core.pixelmon.api.sprite.SpriteHelper;
 import com.aystudio.core.pixelmon.api.stats.StatsHelper;
-import com.aystudio.core.pixelmon.listener.CatServerModel;
-import com.aystudio.core.pixelmon.listener.IForgeListener;
-import com.aystudio.core.pixelmon.listener.MagmaModel;
-import com.aystudio.core.pixelmon.listener.MohistModel;
+import com.aystudio.core.forge.IForgeListenHandler;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -20,19 +18,13 @@ import java.lang.reflect.Field;
 @SuppressWarnings("unused")
 public class PokemonAPI {
     public static boolean old;
-    private IForgeListener forgeListener;
+    private IForgeListenHandler forgeListener;
     private Lang lang;
     private SpriteHelper sh;
     private StatsHelper statsHelper;
     private EnumPixelmon enumPixelmon;
 
-    @Deprecated
-    public static PokemonAPI getInstance() {
-        return AyCore.getPokemonAPI();
-    }
-
     public void onLoad() {
-        this.inject();
         switch ((enumPixelmon = getPixelmonType())) {
             case PIXELMON_REFORGED:
                 this.setupLang();
@@ -80,7 +72,7 @@ public class PokemonAPI {
         return sh;
     }
 
-    public IForgeListener getForgeListener() {
+    public IForgeListenHandler getForgeListener() {
         return this.forgeListener;
     }
 
@@ -95,28 +87,12 @@ public class PokemonAPI {
     }
 
     private EnumPixelmon getPixelmonType() {
-        if (hasClass("com.pixelmonmod.pixelmon.Pixelmon")) {
+        if (ReflectionUtil.hasClass("com.pixelmonmod.pixelmon.Pixelmon")) {
             return EnumPixelmon.PIXELMON_REFORGED;
-        } else if (hasClass("com.pixelmongenerations.core.Pixelmon")) {
+        } else if (ReflectionUtil.hasClass("com.pixelmongenerations.core.Pixelmon")) {
             return EnumPixelmon.PIXELMON_GENERATIONS;
         }
         return EnumPixelmon.NONE;
-    }
-
-    public void inject() {
-        boolean forward = AyCore.getBlank038API().getConfig().getBoolean("forward_forge_event", true);
-        if (forward && this.hasClass("catserver.api.bukkit.event.ForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new CatServerModel()), AyCore.getBlank038API());
-            LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aCatServer");
-        } else if (forward && this.hasClass("red.mohist.api.event.BukkitHookForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new MohistModel()), AyCore.getBlank038API());
-            LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMohist");
-        } else if (forward && this.hasClass("org.magmafoundation.magma.api.events.ForgeEvents")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new MagmaModel()), AyCore.getBlank038API());
-            LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMagma");
-        } else {
-            LoggerUtil.getOrRegister(AyCore.class).log("&f无挂钩核心载入");
-        }
     }
 
     /**
@@ -156,14 +132,5 @@ public class PokemonAPI {
         } catch (Exception ignored) {
         }
         return version;
-    }
-
-    public boolean hasClass(String c) {
-        try {
-            Class.forName(c);
-            return true;
-        } catch (Exception ignored) {
-            return false;
-        }
     }
 }

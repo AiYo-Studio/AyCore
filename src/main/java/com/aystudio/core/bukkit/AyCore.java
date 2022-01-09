@@ -5,6 +5,8 @@ import com.aystudio.core.bukkit.command.registry.CommandRegistry;
 import com.aystudio.core.bukkit.listener.PluginStatusListener;
 import com.aystudio.core.bukkit.plugin.AyPlugin;
 import com.aystudio.core.bukkit.thread.ThreadProcessor;
+import com.aystudio.core.bukkit.util.common.ReflectionUtil;
+import com.aystudio.core.forge.ForgeInject;
 import com.google.gson.*;
 import com.aystudio.core.bukkit.listener.CommandListener;
 import com.aystudio.core.bukkit.model.common.PluginData;
@@ -108,6 +110,8 @@ public class AyCore extends AyPlugin {
         this.getConsoleLogger().log(false, "   &3AyCore &bv" + getDescription().getVersion());
         this.getConsoleLogger().log(false, " ");
         this.getConsoleLogger().log(false, "&f[&eAC&f] &6AyCore //>");
+        // 注入 Forge 模块
+        new ForgeInject();
         // 初始化 PokemonAPI
         pokemonAPI.onLoad();
         this.init();
@@ -182,7 +186,7 @@ public class AyCore extends AyPlugin {
             JsonObject lib = libJson.getAsJsonObject("lib");
             for (Map.Entry<String, JsonElement> entry : lib.entrySet()) {
                 JsonObject target = entry.getValue().getAsJsonObject();
-                if (pokemonAPI.hasClass(target.get("class").getAsString())) {
+                if (ReflectionUtil.hasClass(target.get("class").getAsString())) {
                     this.getConsoleLogger().log("&f依赖 &a" + entry.getKey() + " &f已被加载, 取消检测.");
                     continue;
                 }
