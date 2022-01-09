@@ -4,7 +4,7 @@ import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
 import com.aystudio.core.pixelmon.api.enums.EnumPixelmon;
-import com.aystudio.core.pixelmon.api.lang.Lang;
+import com.aystudio.core.pixelmon.api.i18n.PixelmonI18n;
 import com.aystudio.core.pixelmon.api.sprite.SpriteHelper;
 import com.aystudio.core.pixelmon.api.stats.StatsHelper;
 import com.aystudio.core.forge.IForgeListenHandler;
@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
 public class PokemonAPI {
     public static boolean old;
     private IForgeListenHandler forgeListener;
-    private Lang lang;
+    private PixelmonI18n lang;
     private SpriteHelper sh;
     private StatsHelper statsHelper;
     private EnumPixelmon enumPixelmon;
@@ -59,7 +59,7 @@ public class PokemonAPI {
      *
      * @return 语言类
      */
-    public Lang getLang() {
+    public PixelmonI18n getLanguage() {
         return lang;
     }
 
@@ -112,10 +112,10 @@ public class PokemonAPI {
         }
         switch (version) {
             case "v1_7_R4":
-                lang = new Lang(AyCore.getBlank038API(), false);
+                lang = new PixelmonI18n(AyCore.getBlank038API(), false);
                 break;
             case "v1_12_R1":
-                lang = new Lang(AyCore.getBlank038API(), true);
+                lang = new PixelmonI18n(AyCore.getBlank038API(), true);
                 break;
             default:
                 break;

@@ -1,4 +1,4 @@
-package com.aystudio.core.pixelmon.listener.model;
+package com.aystudio.core.forge.model;
 
 import catserver.api.bukkit.event.ForgeEvent;
 import com.aystudio.core.forge.impl.AbstractForgeListenHandler;
@@ -17,7 +17,7 @@ public class CatServerModel extends AbstractForgeListenHandler {
 
     @EventHandler
     public void onListener(ForgeEvent event) {
-        com.aystudio.core.pixelmon.api.event.ForgeEvent forgeEvent = new com.aystudio.core.pixelmon.api.event.ForgeEvent(event.getForgeEvent());
+        com.aystudio.core.forge.event.ForgeEvent forgeEvent = new com.aystudio.core.forge.event.ForgeEvent(event.getForgeEvent());
         Bukkit.getPluginManager().callEvent(forgeEvent);
     }
 }

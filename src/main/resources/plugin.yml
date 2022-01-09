@@ -1,5 +1,5 @@
-name: PokemonAPI
-main: com.mc9y.blank038api.Blank038API
+name: AyCore
+main: com.aystudio.core.bukkit.AyCore
 authors:
   - Blank038
   - Laotou

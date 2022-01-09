@@ -53,6 +53,6 @@ public class PokemonUtil {
     }
 
     public static String getPokemonName(EnumSpecies species) {
-        return AyCore.getPokemonAPI().getLang().getString("pixelmon." + species.getPokemonName().toLowerCase() + ".name");
+        return AyCore.getPokemonAPI().getLanguage().getString("pixelmon." + species.getPokemonName().toLowerCase() + ".name");
     }
 }

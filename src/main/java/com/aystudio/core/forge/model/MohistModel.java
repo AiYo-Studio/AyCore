@@ -1,7 +1,7 @@
-package com.aystudio.core.pixelmon.listener.model;
+package com.aystudio.core.forge.model;
 
 import com.aystudio.core.forge.impl.AbstractForgeListenHandler;
-import com.aystudio.core.pixelmon.api.event.ForgeEvent;
+import com.aystudio.core.forge.event.ForgeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
 import red.mohist.api.event.BukkitHookForgeEvent;

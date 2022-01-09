@@ -2,6 +2,8 @@ package com.aystudio.core.forge.impl;
 
 import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.forge.IForgeListenHandler;
+import com.aystudio.core.forge.event.ForgeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -33,11 +35,17 @@ public class AbstractForgeListenHandler implements IForgeListenHandler {
             RegisteredListener registeredListener = new RegisteredListener(listener, (listener1, event) -> {
                 if (RegisterManager.METHOD_LIST.containsKey(listener1)) {
                     RegisterManager.METHOD_LIST.get(listener1).forEach((method -> {
-                        if (method.getParameterCount() == 0) {
-                            return;
-                        }
                         try {
                             method.invoke(listener1, ReflectionUtil.invoke(event, forgeMethod));
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }));
+                }
+                if (RegisterManager.FORGE_EVENT_METHOD_LIST.containsKey(listener1)) {
+                    RegisterManager.FORGE_EVENT_METHOD_LIST.get(listener1).forEach((method -> {
+                        try {
+                            method.invoke(listener1, new ForgeEvent((Event) ReflectionUtil.invoke(event, forgeMethod)));
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
@@ -51,9 +59,11 @@ public class AbstractForgeListenHandler implements IForgeListenHandler {
 
     @Override
     public void unregisterListener(Plugin plugin, Listener listener) {
-        if (RegisterManager.METHOD_LIST.containsKey(listener)) {
-            Object eventObj = ReflectionUtil.invoke(forgeEventClass, "getHandlerList");
-            ReflectionUtil.invoke(eventObj, "unregister", new Class[]{RegisteredListener.class}, listener);
-        }
+        // 删除监听列表
+        RegisterManager.FORGE_EVENT_METHOD_LIST.remove(listener);
+        RegisterManager.METHOD_LIST.remove(listener);
+        // 取消监听
+        Object eventObj = ReflectionUtil.invoke(forgeEventClass, "getHandlerList");
+        ReflectionUtil.invoke(eventObj, "unregister", new Class[]{RegisteredListener.class}, listener);
     }
 }

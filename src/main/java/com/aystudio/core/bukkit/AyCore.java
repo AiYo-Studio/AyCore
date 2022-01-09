@@ -131,6 +131,8 @@ public class AyCore extends AyPlugin {
         // 开始监听
         this.getConsoleLogger().log("&f插件加载完成, 感谢使用!");
         this.getConsoleLogger().log(false, " ");
+
+        new ExampleListener();
     }
 
     /**

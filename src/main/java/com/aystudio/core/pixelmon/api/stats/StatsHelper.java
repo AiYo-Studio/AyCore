@@ -31,14 +31,14 @@ public class StatsHelper {
                 pokemon.getEVs().getStat(StatsType.SpecialAttack) + pokemon.getEVs().getStat(StatsType.SpecialDefence) + pokemon.getEVs().getStat(StatsType.Speed);
         String totalEVs = df.format((int) (evSum / 510.0 * 100.0)) + "%";
         String totalIVs = df.format((int) (ivSum / 186.0 * 100.0)) + "%";
-        String nickname = (pokemon.getNickname() == null) ? pa.getLang().getString("pixelmon."
+        String nickname = (pokemon.getNickname() == null) ? pa.getLanguage().getString("pixelmon."
                 + pokemon.getSpecies().getPokemonName().toLowerCase() + ".name") : pokemon.getNickname();
         String shiny = AyCore.getBlank038API().getConfig().getString("text.shiny." + pokemon.isShiny(), "<ERROR>");
         int level = pokemon.getLevel();
-        String nature = pa.getLang().getString("enum.nature." + pokemon.getNature().name().toLowerCase());
-        String growth = pa.getLang().getString("enum.growth." + pokemon.getGrowth().name().toLowerCase());
-        String ability = pa.getLang().getString("ability." + pokemon.getAbility().getName() + ".name");
-        String ability_des = pa.getLang().getString("ability." + pokemon.getAbility().getName() + ".description"),
+        String nature = pa.getLanguage().getString("enum.nature." + pokemon.getNature().name().toLowerCase());
+        String growth = pa.getLanguage().getString("enum.growth." + pokemon.getGrowth().name().toLowerCase());
+        String ability = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".name");
+        String ability_des = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".description"),
                 nullOption = AyCore.getBlank038API().getConfig().getString("text.error", "<ERROR>");
         String originalTrainer = pokemon.getOriginalTrainer() == null ? nullOption : pokemon.getOriginalTrainer();
 
@@ -46,7 +46,7 @@ public class StatsHelper {
             开始计算技能
          */
         for (int i = 0; i < 4; i++) {
-            pshm.put(EnumStats.valueOf("Move" + (i + 1)), (pokemon.getMoveset().get(i) != null) ? (pa.getLang().getString("attack." +
+            pshm.put(EnumStats.valueOf("Move" + (i + 1)), (pokemon.getMoveset().get(i) != null) ? (pa.getLanguage().getString("attack." +
                     getAttackBase(pokemon.getMoveset().get(i)).toLowerCase() + ".name")) : nullOption);
         }
 

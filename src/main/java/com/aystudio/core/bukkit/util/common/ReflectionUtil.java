@@ -15,9 +15,9 @@ public class ReflectionUtil {
 
     public static Object invoke(Object obj, String methodName, Class<?>[] paramsClass, Object... params) {
         try {
-            Class<?> c = obj.getClass();
+            Class<?> c = obj instanceof Class ? (Class<?>) obj : obj.getClass();
             Method method = c.getMethod(methodName, paramsClass);
-            method.invoke(obj, params);
+            return method.invoke(obj, params);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

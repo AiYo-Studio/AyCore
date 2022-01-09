@@ -1,4 +1,4 @@
-package com.aystudio.core.pixelmon.api.lang;
+package com.aystudio.core.pixelmon.api.i18n;
 
 import com.google.common.collect.Maps;
 import com.aystudio.core.bukkit.AyCore;
@@ -16,11 +16,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
 
-public class Lang {
+/**
+ * @author Blank038
+ * @since 2022-01-09
+ */
+public class PixelmonI18n {
     private Map<String, String> values = Maps.newHashMap();
     private final boolean highVersion;
 
-    public Lang(AyCore pa, boolean v1_12_2) {
+    public PixelmonI18n(AyCore pa, boolean v1_12_2) {
         this.highVersion = v1_12_2;
         try {
             if (highVersion) {

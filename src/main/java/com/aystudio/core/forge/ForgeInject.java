@@ -3,9 +3,9 @@ package com.aystudio.core.forge;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
-import com.aystudio.core.pixelmon.listener.model.CatServerModel;
-import com.aystudio.core.pixelmon.listener.model.MagmaModel;
-import com.aystudio.core.pixelmon.listener.model.MohistModel;
+import com.aystudio.core.forge.model.CatServerModel;
+import com.aystudio.core.forge.model.MagmaModel;
+import com.aystudio.core.forge.model.MohistModel;
 import org.bukkit.Bukkit;
 
 /**
