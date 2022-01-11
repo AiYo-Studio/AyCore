@@ -21,7 +21,7 @@ public class AdvancementMessage extends BaseMessage {
     private final String TOAST_JSON;
 
     protected AdvancementMessage(String json) {
-        this.ADVANCEMENT_ID = new NamespacedKey(AyCore.getBlank038API(), UUID.randomUUID().toString());
+        this.ADVANCEMENT_ID = new NamespacedKey(AyCore.getInstance(), UUID.randomUUID().toString());
         this.TOAST_JSON = json;
     }
 
@@ -34,7 +34,7 @@ public class AdvancementMessage extends BaseMessage {
             Arrays.stream(players).filter(OfflinePlayer::isOnline).forEach((player) -> {
                 AdvancementProgress progress = player.getAdvancementProgress(advancement);
                 progress.getRemainingCriteria().forEach(progress::awardCriteria);
-                Bukkit.getScheduler().runTaskLaterAsynchronously(AyCore.getBlank038API(),
+                Bukkit.getScheduler().runTaskLaterAsynchronously(AyCore.getInstance(),
                         () -> progress.getAwardedCriteria().forEach(progress::revokeCriteria), 10L);
             });
         } finally {

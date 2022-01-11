@@ -33,13 +33,13 @@ public class StatsHelper {
         String totalIVs = df.format((int) (ivSum / 186.0 * 100.0)) + "%";
         String nickname = (pokemon.getNickname() == null) ? pa.getLanguage().getString("pixelmon."
                 + pokemon.getSpecies().getPokemonName().toLowerCase() + ".name") : pokemon.getNickname();
-        String shiny = AyCore.getBlank038API().getConfig().getString("text.shiny." + pokemon.isShiny(), "<ERROR>");
+        String shiny = AyCore.getInstance().getConfig().getString("text.shiny." + pokemon.isShiny(), "<ERROR>");
         int level = pokemon.getLevel();
         String nature = pa.getLanguage().getString("enum.nature." + pokemon.getNature().name().toLowerCase());
         String growth = pa.getLanguage().getString("enum.growth." + pokemon.getGrowth().name().toLowerCase());
         String ability = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".name");
         String ability_des = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".description"),
-                nullOption = AyCore.getBlank038API().getConfig().getString("text.error", "<ERROR>");
+                nullOption = AyCore.getInstance().getConfig().getString("text.error", "<ERROR>");
         String originalTrainer = pokemon.getOriginalTrainer() == null ? nullOption : pokemon.getOriginalTrainer();
 
         /*
@@ -66,7 +66,7 @@ public class StatsHelper {
         pshm.put(EnumStats.Owner, pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getDisplayNameString() : "无");
         pshm.put(EnumStats.Shiny, shiny);
         pshm.put(EnumStats.Growth, growth);
-        String gender = AyCore.getBlank038API().getConfig().getString("text.gender." + pokemon.getGender().name().toLowerCase());
+        String gender = AyCore.getInstance().getConfig().getString("text.gender." + pokemon.getGender().name().toLowerCase());
         pshm.put(EnumStats.Gender, gender);
         pshm.put(EnumStats.Nature, nature);
         pshm.put(EnumStats.IVS_SUM, totalIVs);
@@ -77,8 +77,8 @@ public class StatsHelper {
         pshm.put(EnumStats.OriginalTrainer, originalTrainer);
         pshm.put(EnumStats.TRANSLATE_NAME, PokemonUtil.getPokemonName(pokemon.getSpecies()));
         pshm.put(EnumStats.SPECIE_NAME, pokemon.getSpecies().name());
-        pshm.put(EnumStats.SPEC_FLAG_UNTRADEABLE, AyCore.getBlank038API().getConfig().getString("text.common." + pokemon.hasSpecFlag("untradeable")));
-        pshm.put(EnumStats.SPEC_FLAG_UNBTREEDABLE, AyCore.getBlank038API().getConfig().getString("text.common." + pokemon.hasSpecFlag("unbreedable")));
+        pshm.put(EnumStats.SPEC_FLAG_UNTRADEABLE, AyCore.getInstance().getConfig().getString("text.common." + pokemon.hasSpecFlag("untradeable")));
+        pshm.put(EnumStats.SPEC_FLAG_UNBTREEDABLE, AyCore.getInstance().getConfig().getString("text.common." + pokemon.hasSpecFlag("unbreedable")));
         return pshm;
     }
 

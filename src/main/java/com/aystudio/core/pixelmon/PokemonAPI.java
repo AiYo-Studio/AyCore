@@ -112,10 +112,10 @@ public class PokemonAPI {
         }
         switch (version) {
             case "v1_7_R4":
-                lang = new PixelmonI18n(AyCore.getBlank038API(), false);
+                lang = new PixelmonI18n(AyCore.getInstance(), false);
                 break;
             case "v1_12_R1":
-                lang = new PixelmonI18n(AyCore.getBlank038API(), true);
+                lang = new PixelmonI18n(AyCore.getInstance(), true);
                 break;
             default:
                 break;

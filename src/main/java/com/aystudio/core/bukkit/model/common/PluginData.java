@@ -61,6 +61,6 @@ public class PluginData {
     }
 
     public static PluginData getData(Plugin plugin) {
-        return AyCore.getBlank038API().dataMap.getOrDefault(plugin, null);
+        return AyCore.getInstance().dataMap.getOrDefault(plugin, null);
     }
 }

@@ -53,7 +53,7 @@ public class AyCore extends AyPlugin {
      *
      * @return 主类实例
      */
-    public static AyCore getBlank038API() {
+    public static AyCore getInstance() {
         return ayCore;
     }
 
@@ -131,8 +131,6 @@ public class AyCore extends AyPlugin {
         // 开始监听
         this.getConsoleLogger().log("&f插件加载完成, 感谢使用!");
         this.getConsoleLogger().log(false, " ");
-
-        new ExampleListener();
     }
 
     /**

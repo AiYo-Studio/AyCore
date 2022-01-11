@@ -25,8 +25,8 @@ public class ModifyListener {
      * @param files   监听文件
      */
     public static void addListener(Plugin plugin, CustomExecute<ModifyData> execute, boolean async, File... files) {
-        new ModifyData(AyCore.getBlank038API().dataMap.getOrDefault(plugin,
-                AyCore.getBlank038API().dataMap.put(plugin, new PluginData(plugin))), files, execute, async);
+        new ModifyData(AyCore.getInstance().dataMap.getOrDefault(plugin,
+                AyCore.getInstance().dataMap.put(plugin, new PluginData(plugin))), files, execute, async);
     }
 
     /**
@@ -36,9 +36,9 @@ public class ModifyListener {
      * @param modifyData 文件修改数据类
      */
     public static void removeListener(Plugin plugin, ModifyData[] modifyData) {
-        if (AyCore.getBlank038API().dataMap.containsKey(plugin)) {
+        if (AyCore.getInstance().dataMap.containsKey(plugin)) {
             for (ModifyData md : modifyData) {
-                AyCore.getBlank038API().dataMap.get(plugin).removeModifyData(md);
+                AyCore.getInstance().dataMap.get(plugin).removeModifyData(md);
             }
         }
     }
@@ -49,8 +49,8 @@ public class ModifyListener {
      * @param plugin 目标插件
      */
     public static void removeListener(Plugin plugin) {
-        if (AyCore.getBlank038API().dataMap.containsKey(plugin)) {
-            AyCore.getBlank038API().dataMap.get(plugin).removeAllModifyData();
+        if (AyCore.getInstance().dataMap.containsKey(plugin)) {
+            AyCore.getInstance().dataMap.get(plugin).removeAllModifyData();
         }
     }
 
@@ -61,9 +61,9 @@ public class ModifyListener {
      * @return 插件数据
      */
     public static PluginData registerPluginData(Plugin plugin) {
-        if (!AyCore.getBlank038API().dataMap.containsKey(plugin)) {
-            return AyCore.getBlank038API().dataMap.put(plugin, new PluginData(plugin));
+        if (!AyCore.getInstance().dataMap.containsKey(plugin)) {
+            return AyCore.getInstance().dataMap.put(plugin, new PluginData(plugin));
         }
-        return AyCore.getBlank038API().dataMap.get(plugin);
+        return AyCore.getInstance().dataMap.get(plugin);
     }
 }

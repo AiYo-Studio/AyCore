@@ -12,7 +12,7 @@ public class KeyChannel {
 
     public void sendMessage(Player player, String message) {
         if (player != null && player.isOnline()) {
-            player.sendPluginMessage(AyCore.getBlank038API(), "keyexecute", message.getBytes(StandardCharsets.UTF_8));
+            player.sendPluginMessage(AyCore.getInstance(), "keyexecute", message.getBytes(StandardCharsets.UTF_8));
         }
     }
 }

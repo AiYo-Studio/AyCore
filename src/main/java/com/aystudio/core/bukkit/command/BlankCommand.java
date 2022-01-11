@@ -13,7 +13,7 @@ public class BlankCommand {
     @CustomCommand()
     public void perform(CommandSender commandSender) {
         if (commandSender.hasPermission("bapi.admin")) {
-            AyCore.getBlank038API().loadConfig();
+            AyCore.getInstance().loadConfig();
             commandSender.sendMessage(ChatColor.GREEN + "Success reload configuration.");
         }
     }

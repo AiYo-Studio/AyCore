@@ -19,15 +19,15 @@ public class ForgeInject {
     public ForgeInject() {
         instance = this;
         // 注册 Forge 事件监听
-        boolean forward = AyCore.getBlank038API().getConfig().getBoolean("forward_forge_event", true);
+        boolean forward = AyCore.getInstance().getConfig().getBoolean("forward_forge_event", true);
         if (forward && ReflectionUtil.hasClass("catserver.api.bukkit.event.ForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new CatServerModel()), AyCore.getBlank038API());
+            Bukkit.getPluginManager().registerEvents((forgeListener = new CatServerModel()), AyCore.getInstance());
             LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aCatServer");
         } else if (forward && ReflectionUtil.hasClass("red.mohist.api.event.BukkitHookForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new MohistModel()), AyCore.getBlank038API());
+            Bukkit.getPluginManager().registerEvents((forgeListener = new MohistModel()), AyCore.getInstance());
             LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMohist");
         } else if (forward && ReflectionUtil.hasClass("org.magmafoundation.magma.api.events.ForgeEvents")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new MagmaModel()), AyCore.getBlank038API());
+            Bukkit.getPluginManager().registerEvents((forgeListener = new MagmaModel()), AyCore.getInstance());
             LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMagma");
         } else {
             LoggerUtil.getOrRegister(AyCore.class).log("&f无挂钩核心载入");

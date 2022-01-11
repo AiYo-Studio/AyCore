@@ -27,7 +27,7 @@ public class SpriteHelper {
 //        compound.set("SpriteName", new NBTTagString(getSprite(pokemon)));
 //        nmsitem.setTag(compound);
 ///        item = CraftItemStack.asBukkitCopy(nmsitem);
-        return ((FMethodClass) AyCore.getBlank038API().getNMSClass()).convertItemStack(ItemPixelmonSprite.getPhoto(pokemon));
+        return ((FMethodClass) AyCore.getInstance().getNMSClass()).convertItemStack(ItemPixelmonSprite.getPhoto(pokemon));
     }
 
 ///    /*

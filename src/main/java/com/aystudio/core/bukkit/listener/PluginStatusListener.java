@@ -19,7 +19,7 @@ public class PluginStatusListener implements Listener {
         ThreadProcessor.stopPluginTask(pluginName);
         AyCore.getCommandRegistry().unregisterCommand(event.getPlugin());
         ModifyListener.removeListener(event.getPlugin());
-        PluginData pluginData = AyCore.getBlank038API().dataMap.remove(event.getPlugin());
+        PluginData pluginData = AyCore.getInstance().dataMap.remove(event.getPlugin());
         if (pluginData != null) {
             pluginData.disable();
         }

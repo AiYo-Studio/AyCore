@@ -26,8 +26,8 @@ public class MySqlStorageHandler {
 
     public MySqlStorageHandler(JavaPlugin plugin, String url, String user, String password, String... initUpdateStatement) {
         try {
-            this.dataSource = AyCore.getBlank038API().hasHikariCP() && AyCore.getBlank038API().isSameHikariVersion()
-                    && AyCore.getBlank038API().getConfig().getBoolean("hikari", true)
+            this.dataSource = AyCore.getInstance().hasHikariCP() && AyCore.getInstance().isSameHikariVersion()
+                    && AyCore.getInstance().getConfig().getBoolean("hikari", true)
                     ? new HikariDataSourceHandler(plugin, url, user, password) : new CommonDataSourceHandler(plugin, url, user, password);
         } catch (Exception ignored) {
             this.dataSource = new CommonDataSourceHandler(plugin, url, user, password);

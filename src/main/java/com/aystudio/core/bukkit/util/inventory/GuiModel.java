@@ -104,7 +104,7 @@ public class GuiModel implements InventoryHolder, Listener {
      */
     @Deprecated
     public void setListener(boolean listener) {
-        this.registerListener(AyCore.getBlank038API());
+        this.registerListener(AyCore.getInstance());
     }
 
     /**
