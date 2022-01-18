@@ -9,15 +9,29 @@ import java.lang.reflect.Method;
  */
 public class ReflectionUtil {
 
-    public static Object invoke(Object obj, String methodName) {
-        return ReflectionUtil.invoke(obj, methodName, new Class[0]);
+    public static Object invokeMethod(Object obj, String methodName) {
+        return ReflectionUtil.invokeMethod(obj, methodName, new Class[0]);
     }
 
-    public static Object invoke(Object obj, String methodName, Class<?>[] paramsClass, Object... params) {
+    public static Object invokeMethod(Object obj, String methodName, Class<?>[] paramsClass, Object... params) {
         try {
-            Class<?> c = obj instanceof Class ? (Class<?>) obj : obj.getClass();
+            Class<?> c = obj instanceof Class<?> ? (Class<?>) obj : obj.getClass();
             Method method = c.getMethod(methodName, paramsClass);
             return method.invoke(obj, params);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object invokeDeclaredMethod(Object obj, String methodName, Class<?>[] paramsClass, Object... params) {
+        try {
+            Class<?> c = obj instanceof Class<?> ? (Class<?>) obj : obj.getClass();
+            Method method = c.getDeclaredMethod(methodName, paramsClass);
+            method.setAccessible(true);
+            Object result = method.invoke(obj, params);
+            method.setAccessible(false);
+            return result;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

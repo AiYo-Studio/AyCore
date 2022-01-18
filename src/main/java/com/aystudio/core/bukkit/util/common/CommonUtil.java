@@ -77,6 +77,24 @@ public class CommonUtil {
         }
     }
 
+    public static byte[] transferFileToBytes(File f) {
+        try {
+            FileInputStream fis = new FileInputStream(f);
+            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+            int b;
+            while ((b = fis.read()) != -1) {
+                byteArray.write(b);
+            }
+            byteArray.flush();
+            byteArray.close();
+            fis.close();
+            return byteArray.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+    }
+
     /**
      * 将插件资源以输入流写入指定文件
      *

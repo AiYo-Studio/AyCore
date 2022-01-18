@@ -172,7 +172,7 @@ public class AyCore extends AyPlugin {
                 this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
                 break;
         }
-        this.getConsoleLogger().log("&f成功加载: &aBlank038API");
+        this.getConsoleLogger().log("&f成功加载: &aAyCoreApi");
     }
 
     public void loadLibraries() {

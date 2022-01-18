@@ -36,7 +36,7 @@ public class AbstractForgeListenHandler implements IForgeListenHandler {
                 if (RegisterManager.METHOD_LIST.containsKey(listener1)) {
                     RegisterManager.METHOD_LIST.get(listener1).forEach((method -> {
                         try {
-                            method.invoke(listener1, ReflectionUtil.invoke(event, forgeMethod));
+                            method.invoke(listener1, ReflectionUtil.invokeMethod(event, forgeMethod));
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
@@ -45,15 +45,15 @@ public class AbstractForgeListenHandler implements IForgeListenHandler {
                 if (RegisterManager.FORGE_EVENT_METHOD_LIST.containsKey(listener1)) {
                     RegisterManager.FORGE_EVENT_METHOD_LIST.get(listener1).forEach((method -> {
                         try {
-                            method.invoke(listener1, new ForgeEvent((Event) ReflectionUtil.invoke(event, forgeMethod)));
+                            method.invoke(listener1, new ForgeEvent((Event) ReflectionUtil.invokeMethod(event, forgeMethod)));
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             e.printStackTrace();
                         }
                     }));
                 }
             }, priority, plugin, false);
-            Object eventObj = ReflectionUtil.invoke(forgeEventClass, "getHandlerList");
-            ReflectionUtil.invoke(eventObj, "register", new Class[]{RegisteredListener.class}, registeredListener);
+            Object eventObj = ReflectionUtil.invokeMethod(forgeEventClass, "getHandlerList");
+            ReflectionUtil.invokeMethod(eventObj, "register", new Class[]{RegisteredListener.class}, registeredListener);
         }
     }
 
@@ -63,7 +63,7 @@ public class AbstractForgeListenHandler implements IForgeListenHandler {
         RegisterManager.FORGE_EVENT_METHOD_LIST.remove(listener);
         RegisterManager.METHOD_LIST.remove(listener);
         // 取消监听
-        Object eventObj = ReflectionUtil.invoke(forgeEventClass, "getHandlerList");
-        ReflectionUtil.invoke(eventObj, "unregister", new Class[]{RegisteredListener.class}, listener);
+        Object eventObj = ReflectionUtil.invokeMethod(forgeEventClass, "getHandlerList");
+        ReflectionUtil.invokeMethod(eventObj, "unregister", new Class[]{RegisteredListener.class}, listener);
     }
 }
