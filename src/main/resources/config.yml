@@ -20,3 +20,5 @@ text:
   common:
     true: "是"
     false: "否"
+# 是否开启 debug
+debug: false

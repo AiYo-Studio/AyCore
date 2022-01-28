@@ -61,6 +61,9 @@ public class PluginAuth {
             socket.close();
         } catch (Exception e) {
             AyCore.getInstance().getConsoleLogger().log(false, "&f[" + plugin.getName() + "&f] &cAuthentication failed, reason: &7" + e.getLocalizedMessage());
+            if (AyCore.getInstance().getConfig().getBoolean("debug")) {
+                e.printStackTrace();
+            }
         }
     }
 }
