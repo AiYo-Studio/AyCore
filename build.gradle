@@ -2,11 +2,16 @@ buildscript {
     repositories {
         maven { url = uri("https://plugins.gradle.org/m2/") }
         maven { url = "https://files.minecraftforge.net/maven" }
-        maven { url = "https://repo.mc9y.com/snapshots"}
+        maven { url = "https://repo.mc9y.com/snapshots" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
+}
+
+plugins {
+    id 'signing'
+    id 'maven-publish'
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -52,4 +57,33 @@ tasks.withType(Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('encoding', 'UTF-8')
     options.addStringOption('excludes', '')
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "ayStudioRepository"
+            url = "https://repo.mc9y.com/snapshots"
+            credentials {
+                username = "$ayStudioRepositoryUsername"
+                password = "$ayStudioRepositoryPassword"
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
 }
