@@ -3,7 +3,7 @@ package com.aystudio.core.pixelmon.api.sprite;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.nms.FMethodClass;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
+import com.pixelmonmod.pixelmon.items.SpriteItem;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -20,6 +20,6 @@ public class SpriteHelper {
      * @return 精灵相片物品
      */
     public ItemStack getSpriteItem(Pokemon pokemon) {
-        return ((FMethodClass) AyCore.getInstance().getNMSClass()).convertItemStack(ItemPixelmonSprite.getPhoto(pokemon));
+        return ((FMethodClass) AyCore.getInstance().getNMSClass()).convertItemStack(SpriteItem.getPhoto(pokemon));
     }
 }

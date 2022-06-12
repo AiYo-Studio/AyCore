@@ -3,7 +3,6 @@ package com.aystudio.core.pixelmon;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
-import com.aystudio.core.forge.IForgeListenHandler;
 import com.aystudio.core.pixelmon.api.enums.EnumPixelmon;
 import com.aystudio.core.pixelmon.api.i18n.PixelmonI18n;
 import com.aystudio.core.pixelmon.api.sprite.SpriteHelper;
@@ -18,7 +17,6 @@ import java.lang.reflect.Field;
 @SuppressWarnings("unused")
 public class PokemonAPI {
     public static boolean old;
-    private IForgeListenHandler forgeListener;
     private PixelmonI18n lang;
     private SpriteHelper sh;
     private StatsHelper statsHelper;
@@ -31,11 +29,6 @@ public class PokemonAPI {
                 statsHelper = new StatsHelper(this);
                 sh = new SpriteHelper();
                 LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonReforged 版本: &a" + getVersion(EnumPixelmon.PIXELMON_REFORGED));
-                LoggerUtil.getOrRegister(AyCore.class).log("&f成功加载: &aPokemonAPI");
-                break;
-            case PIXELMON_GENERATIONS:
-                this.setupLang();
-                LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonGenerations 版本: &a" + getVersion(EnumPixelmon.PIXELMON_GENERATIONS));
                 LoggerUtil.getOrRegister(AyCore.class).log("&f成功加载: &aPokemonAPI");
                 break;
             case NONE:
@@ -72,10 +65,6 @@ public class PokemonAPI {
         return sh;
     }
 
-    public IForgeListenHandler getForgeListener() {
-        return this.forgeListener;
-    }
-
     /**
      * 获取当前 Pixelmon 目标类型
      * 仅会检测: PixelmonReforged(重铸), PixelmonGenerations(世代), None(无)
@@ -89,8 +78,6 @@ public class PokemonAPI {
     private EnumPixelmon getPixelmonType() {
         if (ReflectionUtil.hasClass("com.pixelmonmod.pixelmon.Pixelmon")) {
             return EnumPixelmon.PIXELMON_REFORGED;
-        } else if (ReflectionUtil.hasClass("com.pixelmongenerations.core.Pixelmon")) {
-            return EnumPixelmon.PIXELMON_GENERATIONS;
         }
         return EnumPixelmon.NONE;
     }
@@ -111,11 +98,8 @@ public class PokemonAPI {
         } catch (Exception ignored) {
         }
         switch (version) {
-            case "v1_7_R4":
-                lang = new PixelmonI18n(AyCore.getInstance(), false);
-                break;
-            case "v1_12_R1":
-                lang = new PixelmonI18n(AyCore.getInstance(), true);
+            case "v1_16_R1":
+                lang = new PixelmonI18n(AyCore.getInstance());
                 break;
             default:
                 break;

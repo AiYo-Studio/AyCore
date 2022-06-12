@@ -2,7 +2,7 @@ name: AyCore
 main: com.aystudio.core.bukkit.AyCore
 authors:
   - Blank038
-version: ${version}
+version: @version@
 softdepend:
   - PokePlate
 api-version: 1.13

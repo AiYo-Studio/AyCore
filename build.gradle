@@ -1,89 +1,76 @@
+import org.apache.tools.ant.filters.ReplaceTokens;
+
 buildscript {
     repositories {
-        maven { url = uri("https://plugins.gradle.org/m2/") }
-        maven { url = "https://files.minecraftforge.net/maven" }
-        maven { url = "https://repo.mc9y.com/snapshots" }
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
     }
 }
-
 plugins {
     id 'signing'
     id 'maven-publish'
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
 
-version = "1.0.3-BETA"
-group = "com.aystudio.core"
-archivesBaseName = "AyCore"
+version = '9.0.0-SNAPSHOT'
+group = 'com.aystudio.core'
+archivesBaseName = 'AyCore'
 
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 minecraft {
-    version = "1.12.2-14.23.5.2807"
-    runDir = "run"
-    mappings = "snapshot_20171003"
+    mappings channel: 'official', version: '1.16.5'
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.35'
+    implementation fileTree(dir: './libs', includes: ['*.jar'])
 }
 
 processResources {
-    inputs.property "version", project.version
-
     from(sourceSets.main.resources.srcDirs) {
-        include 'plugin.yml'
-
-        expand 'version': project.version
+        include '**/*.yml'
+        filter ReplaceTokens, tokens: ["version": project.property("version")]
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
     }
+}
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'plugin.yml'
-    }
+processResources {
+    setFilteringCharset("UTF-8")
+    expand project.properties
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('excludes', '')
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            name = "ayStudioRepository"
-            url = "https://repo.mc9y.com/snapshots"
-            credentials {
-                username = "$ayStudioRepositoryUsername"
-                password = "$ayStudioRepositoryPassword"
-            }
-            authentication {
-                basic(BasicAuthentication)
-            }
-        }
-    }
-}
+//publishing {
+//    publications {
+//        mavenJava(MavenPublication) {
+//            groupId project.group
+//            artifactId project.archivesBaseName
+//            version project.version
+//            from components.java
+//        }
+//    }
+//    repositories {
+//        maven {
+//            name = "ayStudioRepository"
+//            url = "https://repo.mc9y.com/snapshots"
+//            credentials {
+//                username = "$ayStudioRepositoryUsername"
+//                password = "$ayStudioRepositoryPassword"
+//            }
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//        }
+//    }
+//}

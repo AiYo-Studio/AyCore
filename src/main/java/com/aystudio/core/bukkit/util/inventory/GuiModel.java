@@ -136,15 +136,6 @@ public class GuiModel implements InventoryHolder, Listener {
     }
 
     /**
-     * 获取界面标题
-     *
-     * @return Inventory 的 Title
-     */
-    public String getTitle() {
-        return inventory.getTitle();
-    }
-
-    /**
      * 设置点击执行内容
      *
      * @param executeInterface 点击执行器

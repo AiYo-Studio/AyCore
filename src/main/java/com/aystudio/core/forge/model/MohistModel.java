@@ -2,9 +2,9 @@ package com.aystudio.core.forge.model;
 
 import com.aystudio.core.forge.event.ForgeEvent;
 import com.aystudio.core.forge.impl.AbstractForgeListenHandler;
+import com.mohistmc.api.event.BukkitHookForgeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
-import red.mohist.api.event.BukkitHookForgeEvent;
 
 
 /**
@@ -14,7 +14,7 @@ import red.mohist.api.event.BukkitHookForgeEvent;
 public class MohistModel extends AbstractForgeListenHandler {
 
     public MohistModel() {
-        super("getEvent", "red.mohist.api.event.BukkitHookForgeEvent");
+        super("getEvent", "com.mohistmc.api.event.BukkitHookForgeEvent");
     }
 
     @EventHandler

@@ -1,5 +1,6 @@
 package com.aystudio.core.forge.model;
 
+import catserver.api.bukkit.ForgeEventV2;
 import com.aystudio.core.forge.event.ForgeEvent;
 import com.aystudio.core.forge.impl.AbstractForgeListenHandler;
 import org.bukkit.Bukkit;
@@ -12,11 +13,11 @@ import org.bukkit.event.*;
 public class CatServerModel extends AbstractForgeListenHandler {
 
     public CatServerModel() {
-        super("getForgeEvent", "catserver.api.bukkit.event.ForgeEvent");
+        super("getForgeEvent", "catserver.api.bukkit.ForgeEventV2");
     }
 
     @EventHandler
-    public void onListener(catserver.api.bukkit.event.ForgeEvent event) {
+    public void onListener(ForgeEventV2 event) {
         ForgeEvent forgeEvent = new ForgeEvent(event.getForgeEvent());
         Bukkit.getPluginManager().callEvent(forgeEvent);
     }

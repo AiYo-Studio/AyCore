@@ -1,11 +1,11 @@
 package com.aystudio.core.pixelmon.api.data;
 
-import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.entities.pixelmon.stats.Gender;
-import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
+import com.pixelmonmod.pixelmon.api.pokemon.species.gender.Gender;
+import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;
+import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
+import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
-import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 
 import java.util.UUID;
 
@@ -17,7 +17,7 @@ public class PokemonLinkPM extends IPokemonLink {
 
     public PokemonLinkPM(UUID uuid, int slot) {
         super(uuid);
-        PlayerPartyStorage storage = Pixelmon.storageManager.getParty(uuid);
+        PlayerPartyStorage storage = StorageProxy.getParty(uuid);
         if (storage.get(slot) == null) {
             return;
         }
@@ -26,7 +26,7 @@ public class PokemonLinkPM extends IPokemonLink {
 
     @Override
     public int getLevel() {
-        return pokemon.getLevel();
+        return pokemon.getPokemonLevel();
     }
 
     @Override
@@ -52,9 +52,9 @@ public class PokemonLinkPM extends IPokemonLink {
 
     @Override
     public IPokemonLink setIvSotre(int[] ivs) {
-        StatsType[] statsTypes = StatsType.values();
+        BattleStatsType[] statsTypes = BattleStatsType.values();
         for (int i = 0; i < ivs.length && i < statsTypes.length; i++) {
-            pokemon.getIVs().set(statsTypes[i], ivs[i]);
+            pokemon.getIVs().setStat(statsTypes[i], ivs[i]);
         }
         return this;
     }
@@ -66,16 +66,16 @@ public class PokemonLinkPM extends IPokemonLink {
 
     @Override
     public IPokemonLink setEvStore(int[] evs) {
-        StatsType[] statsTypes = StatsType.values();
+        BattleStatsType[] statsTypes = BattleStatsType.values();
         for (int i = 0; i < evs.length && i < statsTypes.length; i++) {
-            pokemon.getEVs().set(statsTypes[i], evs[i]);
+            pokemon.getEVs().setStat(statsTypes[i], evs[i]);
         }
         return this;
     }
 
     @Override
     public void submit(int slot) {
-        PlayerPartyStorage storage = Pixelmon.storageManager.getParty(uuid);
+        PlayerPartyStorage storage = StorageProxy.getParty(uuid);
         storage.set(slot, pokemon);
     }
 

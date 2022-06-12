@@ -9,13 +9,13 @@ import org.bukkit.event.HandlerList;
  */
 public class ForgeEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
-    private final net.minecraftforge.fml.common.eventhandler.Event event;
+    private final net.minecraftforge.eventbus.api.Event event;
 
-    public ForgeEvent(net.minecraftforge.fml.common.eventhandler.Event event) {
+    public ForgeEvent(net.minecraftforge.eventbus.api.Event event) {
         this.event = event;
     }
 
-    public net.minecraftforge.fml.common.eventhandler.Event getForgeEvent() {
+    public net.minecraftforge.eventbus.api.Event getForgeEvent() {
         return event;
     }
 

@@ -4,7 +4,6 @@ import com.aystudio.core.forge.event.ForgeEvent;
 import com.aystudio.core.forge.impl.AbstractForgeListenHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
-import org.magmafoundation.magma.api.events.ForgeEvents;
 
 /**
  * @author Blank038
@@ -13,12 +12,12 @@ import org.magmafoundation.magma.api.events.ForgeEvents;
 public class MagmaModel extends AbstractForgeListenHandler {
 
     public MagmaModel() {
-        super("getForgeEvents", "org.magmafoundation.magma.api.events.ForgeEvents");
+        super("getForgeEvents", "org.magmafoundation.magma.api.events.ForgeEvent");
     }
 
     @EventHandler
-    public void onForgeEvent(ForgeEvents e) {
-        ForgeEvent forgeEvent = new ForgeEvent(e.getForgeEvents());
+    public void onForgeEvent(org.magmafoundation.magma.api.events.ForgeEvent e) {
+        ForgeEvent forgeEvent = new ForgeEvent(e.getForgeEvent());
         Bukkit.getPluginManager().callEvent(forgeEvent);
     }
 }

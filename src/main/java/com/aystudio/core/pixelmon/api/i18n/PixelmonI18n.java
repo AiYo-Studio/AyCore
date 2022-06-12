@@ -1,20 +1,17 @@
 package com.aystudio.core.pixelmon.api.i18n;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
-import com.pixelmonmod.pixelmon.Pixelmon;
-import net.minecraft.util.text.translation.LanguageMap;
-import org.apache.commons.io.IOUtils;
+import net.minecraft.util.text.LanguageMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import java.util.function.BiConsumer;
 
 /**
  * @author Blank038
@@ -22,23 +19,26 @@ import java.util.Properties;
  */
 public class PixelmonI18n {
     private Map<String, String> values = Maps.newHashMap();
-    private final boolean highVersion;
 
-    public PixelmonI18n(AyCore pa, boolean v1_12_2) {
-        this.highVersion = v1_12_2;
+    public PixelmonI18n(AyCore pa) {
         try {
-            if (highVersion) {
-                InputStream inputStream = LanguageMap.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".lang");
-                values = LanguageMap.parseLangFile(inputStream);
-            } else {
-                InputStream inputStream = Pixelmon.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".lang");
-                byte[] data = IOUtils.toByteArray(inputStream);
-                Properties props = new Properties();
-                props.load(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8));
-                for (Map.Entry<Object, Object> e : props.entrySet()) {
-                    values.put((String) e.getKey(), (String) e.getValue());
-                }
-            }
+//            if (highVersion) {
+//                InputStream inputStream = LanguageMap.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".lang");
+//                values = LanguageMap(inputStream);
+//            } else {
+//                InputStream inputStream = Pixelmon.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".lang");
+//                byte[] data = IOUtils.toByteArray(inputStream);
+//                Properties props = new Properties();
+//                props.load(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8));
+//                for (Map.Entry<Object, Object> e : props.entrySet()) {
+//                    values.put((String) e.getKey(), (String) e.getValue());
+//                }
+//            }
+            InputStream inputStream = LanguageMap.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".lang");
+            ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+            BiConsumer<String, String> biconsumer = builder::put;
+            LanguageMap.loadFromJson(inputStream, biconsumer);
+            this.values = new HashMap<>(builder.build());
             LoggerUtil.getOrRegister(AyCore.class).log("§f成功加载语言文件 " + ChatColor.GREEN + pa.getConfig().getString("lang")
                     + " §f(" + values.size() + "个词条)");
         } catch (Exception e) {
@@ -56,10 +56,6 @@ public class PixelmonI18n {
      * @return 词条
      */
     public String getString(String key) {
-        if (highVersion) {
-            return values.getOrDefault(key, "");
-        } else {
-            return "";
-        }
+        return values.getOrDefault(key, "");
     }
 }

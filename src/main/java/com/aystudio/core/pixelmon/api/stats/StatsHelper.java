@@ -5,9 +5,9 @@ import com.aystudio.core.pixelmon.PokemonAPI;
 import com.aystudio.core.pixelmon.api.enums.EnumStats;
 import com.aystudio.core.pixelmon.api.pokemon.PokemonUtil;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
-import com.pixelmonmod.pixelmon.battles.attacks.AttackBase;
-import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
+import com.pixelmonmod.pixelmon.battles.attacks.ImmutableAttack;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -25,16 +25,16 @@ public class StatsHelper {
     public HashMap<EnumStats, Object> getPokeStats(Pokemon pokemon) {
         HashMap<EnumStats, Object> pshm = new HashMap<>();
         DecimalFormat df = new DecimalFormat("#0.##");
-        int ivSum = pokemon.getIVs().getStat(StatsType.HP) + pokemon.getIVs().getStat(StatsType.Attack) + pokemon.getIVs().getStat(StatsType.Defence) +
-                pokemon.getIVs().getStat(StatsType.SpecialAttack) + pokemon.getIVs().getStat(StatsType.SpecialDefence) + pokemon.getIVs().getStat(StatsType.Speed);
-        int evSum = pokemon.getEVs().getStat(StatsType.HP) + pokemon.getEVs().getStat(StatsType.Attack) + pokemon.getEVs().getStat(StatsType.Defence) +
-                pokemon.getEVs().getStat(StatsType.SpecialAttack) + pokemon.getEVs().getStat(StatsType.SpecialDefence) + pokemon.getEVs().getStat(StatsType.Speed);
+        int ivSum = pokemon.getIVs().getStat(BattleStatsType.HP) + pokemon.getIVs().getStat(BattleStatsType.ATTACK) + pokemon.getIVs().getStat(BattleStatsType.DEFENSE) +
+                pokemon.getIVs().getStat(BattleStatsType.SPECIAL_ATTACK) + pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE) + pokemon.getIVs().getStat(BattleStatsType.SPEED);
+        int evSum = pokemon.getEVs().getStat(BattleStatsType.HP) + pokemon.getEVs().getStat(BattleStatsType.ATTACK) + pokemon.getEVs().getStat(BattleStatsType.DEFENSE) +
+                pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK) + pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE) + pokemon.getEVs().getStat(BattleStatsType.SPEED);
         String totalEVs = df.format((int) (evSum / 510.0 * 100.0)) + "%";
         String totalIVs = df.format((int) (ivSum / 186.0 * 100.0)) + "%";
         String nickname = (pokemon.getNickname() == null) ? pa.getLanguage().getString("pixelmon."
-                + pokemon.getSpecies().getPokemonName().toLowerCase() + ".name") : pokemon.getNickname();
+                + pokemon.getSpecies().getName().toLowerCase() + ".name") : pokemon.getNickname();
         String shiny = AyCore.getInstance().getConfig().getString("text.shiny." + pokemon.isShiny(), "<ERROR>");
-        int level = pokemon.getLevel();
+        int level = pokemon.getPokemonLevel();
         String nature = pa.getLanguage().getString("enum.nature." + pokemon.getNature().name().toLowerCase());
         String growth = pa.getLanguage().getString("enum.growth." + pokemon.getGrowth().name().toLowerCase());
         String ability = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".name");
@@ -50,20 +50,20 @@ public class StatsHelper {
                     getAttackBase(pokemon.getMoveset().get(i)).toLowerCase() + ".name")) : nullOption);
         }
 
-        pshm.put(EnumStats.IVS_HP, pokemon.getIVs().getStat(StatsType.HP));
-        pshm.put(EnumStats.IVS_Attack, pokemon.getIVs().getStat(StatsType.Attack));
-        pshm.put(EnumStats.IVS_Speed, pokemon.getIVs().getStat(StatsType.Speed));
-        pshm.put(EnumStats.IVS_Defence, pokemon.getIVs().getStat(StatsType.Defence));
-        pshm.put(EnumStats.IVS_SpecialAttack, pokemon.getIVs().getStat(StatsType.SpecialAttack));
-        pshm.put(EnumStats.IVS_SpecialDefence, pokemon.getIVs().getStat(StatsType.SpecialDefence));
-        pshm.put(EnumStats.EVS_HP, pokemon.getEVs().getStat(StatsType.HP));
-        pshm.put(EnumStats.EVS_Attack, pokemon.getEVs().getStat(StatsType.Attack));
-        pshm.put(EnumStats.EVS_Speed, pokemon.getEVs().getStat(StatsType.Speed));
-        pshm.put(EnumStats.EVS_Defence, pokemon.getEVs().getStat(StatsType.Defence));
-        pshm.put(EnumStats.EVS_SpecialAttack, pokemon.getEVs().getStat(StatsType.SpecialAttack));
-        pshm.put(EnumStats.EVS_SpecialDefence, pokemon.getEVs().getStat(StatsType.SpecialDefence));
+        pshm.put(EnumStats.IVS_HP, pokemon.getIVs().getStat(BattleStatsType.HP));
+        pshm.put(EnumStats.IVS_Attack, pokemon.getIVs().getStat(BattleStatsType.ATTACK));
+        pshm.put(EnumStats.IVS_Speed, pokemon.getIVs().getStat(BattleStatsType.SPEED));
+        pshm.put(EnumStats.IVS_Defence, pokemon.getIVs().getStat(BattleStatsType.DEFENSE));
+        pshm.put(EnumStats.IVS_SpecialAttack, pokemon.getIVs().getStat(BattleStatsType.SPECIAL_ATTACK));
+        pshm.put(EnumStats.IVS_SpecialDefence, pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE));
+        pshm.put(EnumStats.EVS_HP, pokemon.getEVs().getStat(BattleStatsType.HP));
+        pshm.put(EnumStats.EVS_Attack, pokemon.getEVs().getStat(BattleStatsType.ATTACK));
+        pshm.put(EnumStats.EVS_Speed, pokemon.getEVs().getStat(BattleStatsType.SPEED));
+        pshm.put(EnumStats.EVS_Defence, pokemon.getEVs().getStat(BattleStatsType.DEFENSE));
+        pshm.put(EnumStats.EVS_SpecialAttack, pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK));
+        pshm.put(EnumStats.EVS_SpecialDefence, pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE));
         pshm.put(EnumStats.Level, level);
-        pshm.put(EnumStats.Owner, pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getDisplayNameString() : "无");
+        pshm.put(EnumStats.Owner, pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getName().getString() : "无");
         pshm.put(EnumStats.Shiny, shiny);
         pshm.put(EnumStats.Growth, growth);
         String gender = AyCore.getInstance().getConfig().getString("text.gender." + pokemon.getGender().name().toLowerCase());
@@ -76,9 +76,9 @@ public class StatsHelper {
         pshm.put(EnumStats.Ability_DES, ability_des);
         pshm.put(EnumStats.OriginalTrainer, originalTrainer);
         pshm.put(EnumStats.TRANSLATE_NAME, PokemonUtil.getPokemonName(pokemon.getSpecies()));
-        pshm.put(EnumStats.SPECIE_NAME, pokemon.getSpecies().name());
-        pshm.put(EnumStats.SPEC_FLAG_UNTRADEABLE, AyCore.getInstance().getConfig().getString("text.common." + pokemon.hasSpecFlag("untradeable")));
-        pshm.put(EnumStats.SPEC_FLAG_UNBTREEDABLE, AyCore.getInstance().getConfig().getString("text.common." + pokemon.hasSpecFlag("unbreedable")));
+        pshm.put(EnumStats.SPECIE_NAME, pokemon.getSpecies().getName());
+        pshm.put(EnumStats.SPEC_FLAG_UNTRADEABLE, AyCore.getInstance().getConfig().getString("text.common." + pokemon.hasFlag("untradeable")));
+        pshm.put(EnumStats.SPEC_FLAG_UNBTREEDABLE, AyCore.getInstance().getConfig().getString("text.common." + pokemon.hasFlag("unbreedable")));
         return pshm;
     }
 
@@ -127,9 +127,9 @@ public class StatsHelper {
     public String getAttackBase(Attack ms) {
         String attackName = "";
         Object object = getField(ms.getClass(), "baseAttack", ms);
-        AttackBase ab = (object != null ? (AttackBase) object : null);
+        ImmutableAttack ab = (object != null ? (ImmutableAttack) object : null);
         if (ab != null) {
-            attackName = (String) getField(ab.getClass(), "attackName", ab);
+            attackName = ab.getAttackName();
         }
         return PokemonAPI.old ? attackName : attackName.replace(" ", "_");
     }

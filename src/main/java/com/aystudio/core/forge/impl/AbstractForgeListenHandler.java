@@ -3,7 +3,7 @@ package com.aystudio.core.forge.impl;
 import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.forge.IForgeListenHandler;
 import com.aystudio.core.forge.event.ForgeEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
