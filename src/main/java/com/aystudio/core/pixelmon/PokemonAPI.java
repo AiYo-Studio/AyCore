@@ -3,11 +3,11 @@ package com.aystudio.core.pixelmon;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
+import com.aystudio.core.forge.IForgeListenHandler;
 import com.aystudio.core.pixelmon.api.enums.EnumPixelmon;
 import com.aystudio.core.pixelmon.api.i18n.PixelmonI18n;
 import com.aystudio.core.pixelmon.api.sprite.SpriteHelper;
 import com.aystudio.core.pixelmon.api.stats.StatsHelper;
-import com.aystudio.core.forge.IForgeListenHandler;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;

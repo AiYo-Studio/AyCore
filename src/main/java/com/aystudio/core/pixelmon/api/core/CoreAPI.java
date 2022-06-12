@@ -1,9 +1,9 @@
 package com.aystudio.core.pixelmon.api.core;
 
-import com.aystudio.core.pixelmon.api.data.PokemonLinkPG;
-import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.pixelmon.api.data.IPokemonLink;
+import com.aystudio.core.pixelmon.api.data.PokemonLinkPG;
 import com.aystudio.core.pixelmon.api.data.PokemonLinkPM;
+import com.aystudio.core.bukkit.AyCore;
 
 import java.util.UUID;
 

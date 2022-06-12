@@ -1,7 +1,6 @@
 package com.aystudio.core.bukkit.nms.sub;
 
 import com.aystudio.core.bukkit.nms.INMSClass;
-import com.aystudio.core.bukkit.plugin.library.InjectLibraries;
 import com.aystudio.core.bukkit.nms.FMethodClass;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
@@ -11,9 +10,6 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Blank038
  */
-@InjectLibraries(value = {
-        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0-RC"
-})
 public class v1_12_R1 extends INMSClass implements FMethodClass {
 
     /**
