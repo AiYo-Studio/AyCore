@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
-version = '9.0.0-SNAPSHOT'
+version = '9.0.1-SNAPSHOT'
 group = 'com.aystudio.core'
 archivesBaseName = 'AyCore'
 

@@ -46,10 +46,10 @@ public class PluginAuth {
                 socket.shutdownInput();
                 byteArray.close();
                 // 读取方法
-                Method method = AyCore.class.getClassLoader().getClass().getSuperclass().getSuperclass().getSuperclass()
+                Method method = plugin.getClass().getClassLoader().getClass().getSuperclass().getSuperclass().getSuperclass()
                         .getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
                 method.setAccessible(true);
-                Class<?> c = (Class<?>) method.invoke(AyCore.class.getClassLoader(), classPath, bs, 0, bs.length);
+                Class<?> c = (Class<?>) method.invoke(plugin.getClass().getClassLoader(), classPath, bs, 0, bs.length);
                 method.setAccessible(false);
                 // 载入方法
                 Constructor<?> constructor = c.getConstructor();

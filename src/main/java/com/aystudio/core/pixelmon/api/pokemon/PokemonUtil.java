@@ -9,15 +9,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.bukkit.Location;
 
 /**
  * @author Blank038
  */
 public class PokemonUtil {
-    private static final MinecraftServer MINECRAFT_SERVER = LogicalSidedProvider.INSTANCE.get(LogicalSide.SERVER);
+    private static final MinecraftServer MINECRAFT_SERVER = ServerLifecycleHooks.getCurrentServer();
 
     /**
      * 在某个坐标生成某个精灵, 返回 Pokemon
