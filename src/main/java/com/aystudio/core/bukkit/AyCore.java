@@ -10,7 +10,7 @@ import com.aystudio.core.forge.ForgeInject;
 import com.google.gson.*;
 import com.aystudio.core.bukkit.listener.CommandListener;
 import com.aystudio.core.bukkit.model.common.PluginData;
-import com.aystudio.core.bukkit.nms.sub.v1_16_R1;
+import com.aystudio.core.bukkit.nms.sub.v1_16_R3;
 import com.aystudio.core.bukkit.util.custom.VerCheck;
 import com.aystudio.core.bukkit.util.file.LibFileDownload;
 import com.aystudio.core.bukkit.util.key.KeyChannel;
@@ -161,8 +161,8 @@ public class AyCore extends AyPlugin {
         } catch (Exception ignored) {
         }
         switch (version) {
-            case "v1_16_R1":
-                this.setNMSClass(new v1_16_R1());
+            case "v1_16_R3":
+                this.setNMSClass(new v1_16_R3());
                 break;
             default:
                 this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
