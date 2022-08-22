@@ -34,7 +34,7 @@ public class PixelmonI18n {
 //                    values.put((String) e.getKey(), (String) e.getValue());
 //                }
 //            }
-            InputStream inputStream = LanguageMap.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".lang");
+            InputStream inputStream = LanguageMap.class.getResourceAsStream("/assets/pixelmon/lang/" + pa.getConfig().getString("lang") + ".json");
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
             BiConsumer<String, String> biconsumer = builder::put;
             LanguageMap.loadFromJson(inputStream, biconsumer);

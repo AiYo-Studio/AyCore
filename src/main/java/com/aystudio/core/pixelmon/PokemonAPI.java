@@ -98,7 +98,7 @@ public class PokemonAPI {
         } catch (Exception ignored) {
         }
         switch (version) {
-            case "v1_16_R1":
+            case "v1_16_R3":
                 lang = new PixelmonI18n(AyCore.getInstance());
                 break;
             default:

@@ -31,14 +31,13 @@ public class StatsHelper {
                 pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK) + pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE) + pokemon.getEVs().getStat(BattleStatsType.SPEED);
         String totalEVs = df.format((int) (evSum / 510.0 * 100.0)) + "%";
         String totalIVs = df.format((int) (ivSum / 186.0 * 100.0)) + "%";
-        String nickname = (pokemon.getNickname() == null) ? pa.getLanguage().getString("pixelmon."
-                + pokemon.getSpecies().getName().toLowerCase() + ".name") : pokemon.getNickname();
+        String nickname = (pokemon.getNickname() == null) ? PokemonUtil.getPokemonName(pokemon.getSpecies()) : pokemon.getNickname();
         String shiny = AyCore.getInstance().getConfig().getString("text.shiny." + pokemon.isShiny(), "<ERROR>");
         int level = pokemon.getPokemonLevel();
-        String nature = pa.getLanguage().getString("enum.nature." + pokemon.getNature().name().toLowerCase());
-        String growth = pa.getLanguage().getString("enum.growth." + pokemon.getGrowth().name().toLowerCase());
-        String ability = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".name");
-        String ability_des = pa.getLanguage().getString("ability." + pokemon.getAbility().getName() + ".description"),
+        String nature = pa.getLanguage().getString(pokemon.getNature().getTranslationKey());
+        String growth = pa.getLanguage().getString(pokemon.getGrowth().getTranslationKey());
+        String ability = pa.getLanguage().getString(pokemon.getAbility().getTranslationKey());
+        String ability_des = pa.getLanguage().getString(pokemon.getAbility().getTranslationKey() + ".description"),
                 nullOption = AyCore.getInstance().getConfig().getString("text.error", "<ERROR>");
         String originalTrainer = pokemon.getOriginalTrainer() == null ? nullOption : pokemon.getOriginalTrainer();
 
@@ -46,8 +45,8 @@ public class StatsHelper {
             开始计算技能
          */
         for (int i = 0; i < 4; i++) {
-            pshm.put(EnumStats.valueOf("Move" + (i + 1)), (pokemon.getMoveset().get(i) != null) ? (pa.getLanguage().getString("attack." +
-                    getAttackBase(pokemon.getMoveset().get(i)).toLowerCase() + ".name")) : nullOption);
+            pshm.put(EnumStats.valueOf("Move" + (i + 1)), (pokemon.getMoveset().get(i) != null) ?
+                    (pa.getLanguage().getString(this.getAttackBase(pokemon.getMoveset().get(i)).toLowerCase())) : nullOption);
         }
 
         pshm.put(EnumStats.IVS_HP, pokemon.getIVs().getStat(BattleStatsType.HP));
@@ -129,9 +128,9 @@ public class StatsHelper {
         Object object = getField(ms.getClass(), "baseAttack", ms);
         ImmutableAttack ab = (object != null ? (ImmutableAttack) object : null);
         if (ab != null) {
-            attackName = ab.getAttackName();
+            attackName = ab.getTranslationKey();
         }
-        return PokemonAPI.old ? attackName : attackName.replace(" ", "_");
+        return attackName;
     }
 
     public Object getField(Class<?> c, String fieldName, Object src) {

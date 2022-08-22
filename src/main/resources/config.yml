@@ -1,5 +1,5 @@
 # 语言文件名
-lang: zh_CN
+lang: zh_cn
 # 是否启用 HikariCP 连接池
 hikari: true
 # 是否转发 ForgeEvent，如果关闭该设定会导致用到本插件 ForgeEvent 事件的插件失效

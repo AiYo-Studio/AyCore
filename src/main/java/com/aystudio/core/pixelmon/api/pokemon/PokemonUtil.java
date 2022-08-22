@@ -5,7 +5,6 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonFactory;
 import com.pixelmonmod.pixelmon.api.pokemon.species.Species;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
@@ -16,7 +15,6 @@ import org.bukkit.Location;
  * @author Blank038
  */
 public class PokemonUtil {
-    private static final MinecraftServer MINECRAFT_SERVER = ServerLifecycleHooks.getCurrentServer();
 
     /**
      * 在某个坐标生成某个精灵, 返回 Pokemon
@@ -36,7 +34,7 @@ public class PokemonUtil {
     }
 
     public static World getWorld(String worldName) {
-        for (ServerWorld ws : MINECRAFT_SERVER.getAllLevels()) {
+        for (ServerWorld ws : ServerLifecycleHooks.getCurrentServer().getAllLevels()) {
             if (((ServerWorldInfo) ws.getLevelData()).getLevelName().equals(worldName)) {
                 return ws;
             }
@@ -56,6 +54,6 @@ public class PokemonUtil {
     }
 
     public static String getPokemonName(Species species) {
-        return AyCore.getPokemonAPI().getLanguage().getString("pixelmon." + species.getName().toLowerCase() + ".name");
+        return AyCore.getPokemonAPI().getLanguage().getString(species.getTranslationKey());
     }
 }
