@@ -60,7 +60,7 @@ public class CommonUtil {
     public static void outputFileTool(InputStream in, File file) {
         try {
             if (!file.getParentFile().exists()) {
-                Files.createDirectory(file.getParentFile().toPath());
+                CommonUtil.createFolder(file.getParentFile());
             }
             if (!file.exists()) {
                 Files.createFile(file.toPath());
@@ -75,6 +75,17 @@ public class CommonUtil {
             in.close();
         } catch (IOException ignored) {
         }
+    }
+
+    public static void createFolder(File file) {
+        if (file.exists()) {
+            return;
+        }
+        File folder = file.getParentFile();
+        if (!folder.exists()) {
+            CommonUtil.createFolder(folder);
+        }
+        file.mkdir();
     }
 
     public static byte[] transferFileToBytes(File f) {
