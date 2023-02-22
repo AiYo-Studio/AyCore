@@ -15,6 +15,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -125,7 +126,7 @@ public class GuiModel implements InventoryHolder, Listener {
         }
         // 关闭界面
         if (close) {
-            Iterator<HumanEntity> iterator = inventory.getViewers().iterator();
+            Iterator<HumanEntity> iterator = new ArrayList<>(inventory.getViewers()).iterator();
             while (iterator.hasNext()) {
                 HumanEntity humanEntity = iterator.next();
                 if (humanEntity.getOpenInventory().getTopInventory() == this.inventory) {

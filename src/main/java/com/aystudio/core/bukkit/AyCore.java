@@ -11,7 +11,6 @@ import com.google.gson.*;
 import com.aystudio.core.bukkit.listener.CommandListener;
 import com.aystudio.core.bukkit.model.common.PluginData;
 import com.aystudio.core.bukkit.nms.sub.v1_16_R3;
-import com.aystudio.core.bukkit.util.custom.VerCheck;
 import com.aystudio.core.bukkit.util.file.LibFileDownload;
 import com.aystudio.core.bukkit.util.key.KeyChannel;
 import com.aystudio.core.pixelmon.PokemonAPI;
@@ -116,16 +115,6 @@ public class AyCore extends AyPlugin {
         this.init();
         // 统计和更新检测
         new Metrics(this);
-        VerCheck check = new VerCheck(this, "http://www.mc9y.com/checks/{plugin}.txt");
-        if (check.isError()) {
-            this.getConsoleLogger().log("&f检测新版本异常, 不影响使用");
-        } else {
-            if (check.isIdentical()) {
-                this.getConsoleLogger().log("&f插件已是最新版, 无需更新");
-            } else {
-                this.getConsoleLogger().log("&f插件可更新, 最新版: &e" + check.getVersion());
-            }
-        }
         commandRegistry.registerCommand(this, new Object[]{new BlankCommand()}, new String[]{"aycore"});
         // 开始监听
         this.getConsoleLogger().log("&f插件加载完成, 感谢使用!");
