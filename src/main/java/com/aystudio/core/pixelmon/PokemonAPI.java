@@ -126,7 +126,7 @@ public class PokemonAPI {
         String version = "获取失败";
         try {
             Class<?> c = Class.forName(enumPixelmon.getPackage());
-            Field field = c.getField("VERSION");
+            Field field = c.getDeclaredField("VERSION");
             version = (String) field.get(c);
             return version;
         } catch (Exception ignored) {
