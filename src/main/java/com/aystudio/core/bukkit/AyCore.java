@@ -273,7 +273,7 @@ public class AyCore extends AyPlugin {
 
     private void initLibList() {
         try {
-            URL url = new URL("http://www.mc9y.com/info/libs.json");
+            URL url = new URL("https://www.mc9y.com/info/libs.json");
             InputStream is = url.openStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);

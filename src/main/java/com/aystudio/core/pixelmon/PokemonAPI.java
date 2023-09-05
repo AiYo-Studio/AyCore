@@ -8,6 +8,7 @@ import com.aystudio.core.pixelmon.api.enums.EnumPixelmon;
 import com.aystudio.core.pixelmon.api.i18n.PixelmonI18n;
 import com.aystudio.core.pixelmon.api.sprite.SpriteHelper;
 import com.aystudio.core.pixelmon.api.stats.StatsHelper;
+import com.pixelmonmod.pixelmon.Pixelmon;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -127,9 +128,13 @@ public class PokemonAPI {
         try {
             Class<?> c = Class.forName(enumPixelmon.getPackage());
             Field field = c.getDeclaredField("VERSION");
-            version = (String) field.get(c);
+            version = (String) field.get(null);
             return version;
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            if (AyCore.getInstance().getConfig().getBoolean("debug")) {
+                AyCore.getInstance().getLogger().severe(e.toString());
+            }
+            version = Pixelmon.getVersion();
         }
         return version;
     }
