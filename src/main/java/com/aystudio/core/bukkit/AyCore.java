@@ -117,7 +117,7 @@ public class AyCore extends AyPlugin {
         this.init();
         // 统计和更新检测
         new Metrics(this);
-        VerCheck check = new VerCheck(this, "http://www.mc9y.com/checks/{plugin}.txt");
+        VerCheck check = new VerCheck(this, "https://www.mc9y.com/checks/{plugin}.txt");
         if (check.isError()) {
             this.getConsoleLogger().log("&f检测新版本异常, 不影响使用");
         } else {
