@@ -1,71 +1,58 @@
-buildscript {
-    repositories {
-        maven { url = uri("https://plugins.gradle.org/m2/") }
-        maven { url = "https://files.minecraftforge.net/maven" }
-        maven { url = "https://repo.mc9y.com/snapshots" }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
-}
-
 plugins {
+    id 'java'
     id 'signing'
     id 'maven-publish'
 }
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-
-version = "1.0.7-BETA"
+version = "1.1.0-BETA"
 group = "com.aystudio.core"
-archivesBaseName = "AyCore"
 
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+allprojects {
+    apply plugin: 'java'
+
+    repositories {
+        maven {
+            name = "AyStudio-Repository"
+            url = "https://repo.mc9y.com/snapshots"
+        }
+    }
+
+    dependencies {
+        compileOnly("org.projectlombok:lombok:1.18.24")
+        annotationProcessor("org.projectlombok:lombok:1.18.24")
+    }
 }
 
-minecraft {
-    version = "1.12.2-14.23.5.2807"
-    runDir = "run"
-    mappings = "snapshot_20171003"
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+jar {
+    from project(':folia').sourceSets.main.output
+    from project(':bukkit').sourceSets.main.output
 }
 
-repositories {
-    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
+
+tasks.register('allJar', Jar) {
+    dependsOn subprojects.tasks.build
+    archivesBaseName = 'AyCore'
+    subprojects.each { subproject ->
+        from subproject.configurations.archives.allArtifacts.files.collect {
+            zipTree(it)
+        }
+    }
 }
 
-dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+tasks.jar.enabled = false
+
+artifacts {
+    archives allJar
 }
 
 processResources {
-    inputs.property "version", project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'plugin.yml'
-
-        expand 'version': project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'plugin.yml'
-    }
+    setFilteringCharset("UTF-8")
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
-}
-
-tasks.withType(Javadoc) {
-    options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('encoding', 'UTF-8')
-    options.addStringOption('excludes', '')
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
 }
 
 publishing {
@@ -74,7 +61,7 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            from components.java
+            artifact("$buildDir/libs/${project.name}-${project.version}.jar")
         }
     }
     repositories {
