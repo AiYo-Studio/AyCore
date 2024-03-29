@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url = uri("https://maven.minecraftforge.net/") }
+    }
+}
+
+rootProject.name = 'AyCore'
+
+include 'bukkit', 'folia', 'forge'

@@ -1,0 +1,33 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+}
+
+repositories {
+    maven {
+        name = "AyStudio-Repository"
+        url = "https://repo.mc9y.com/snapshots"
+    }
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+dependencies {
+    implementation fileTree(dir: "libs", includes: ["*.jar"])
+    implementation "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
+    implementation "org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT"
+}
+
+processResources {
+    setFilteringCharset("UTF-8")
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/plugin.yml', '**/history.yml'
+        filter ReplaceTokens, tokens: ["version": project(":").property("version")]
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
