@@ -31,8 +31,12 @@ minecraft {
     mappings = "snapshot_20171003"
 }
 
+repositories {
+    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+}
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 }
 
 processResources {

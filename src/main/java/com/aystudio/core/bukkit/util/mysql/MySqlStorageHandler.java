@@ -1,6 +1,7 @@
 package com.aystudio.core.bukkit.util.mysql;
 
 import com.aystudio.core.bukkit.AyCore;
+import com.aystudio.core.bukkit.helper.SchedulerHelper;
 import com.aystudio.core.bukkit.interfaces.CustomExecute;
 import com.aystudio.core.bukkit.util.mysql.interfaces.AbstractDataSourceHandlerImpl;
 import com.aystudio.core.bukkit.util.mysql.interfaces.impl.CommonDataSourceHandler;
@@ -35,7 +36,7 @@ public class MySqlStorageHandler {
         // 执行初始语句
         Arrays.stream(initUpdateStatement).forEach(this::updateStatement);
         // 建立线程定时请求, 避免超时
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        SchedulerHelper.runTaskTimerAsync(plugin, () -> {
             if (reconnection) {
                 this.dataSource.connect((statement) -> {
                     ResultSet resultSet = null;

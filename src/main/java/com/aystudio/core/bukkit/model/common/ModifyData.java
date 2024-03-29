@@ -1,7 +1,7 @@
 package com.aystudio.core.bukkit.model.common;
 
+import com.aystudio.core.bukkit.helper.SchedulerHelper;
 import com.aystudio.core.bukkit.interfaces.CustomExecute;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class ModifyData {
             if (async) {
                 execute.run(this);
             } else {
-                Bukkit.getScheduler().runTask(pluginData.getPlugin(), () -> execute.run(this));
+                SchedulerHelper.runTask(pluginData.getPlugin(), () -> execute.run(this));
             }
         }
     }

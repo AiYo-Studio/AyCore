@@ -7,3 +7,4 @@ softdepend:
   - PokePlate
 api-version: 1.13
 load: STARTUP
+folia-supported: true

@@ -1,11 +1,10 @@
 package com.aystudio.core.bukkit.model.common;
 
 import com.aystudio.core.bukkit.AyCore;
+import com.aystudio.core.bukkit.helper.SchedulerHelper;
 import com.aystudio.core.bukkit.model.configuration.ConfigurationData;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +15,14 @@ import java.util.List;
 public class PluginData {
     private final List<ModifyData> modifyDataList = new ArrayList<>();
     private final Plugin plugin;
-    private final BukkitTask bukkitTask;
+    private final Object bukkitTask;
     private final ConfigurationData configurationData;
 
     public PluginData(Plugin plugin) {
         this.plugin = plugin;
         configurationData = new ConfigurationData();
         // 开始线程监听
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        bukkitTask = SchedulerHelper.runTaskTimerAsync(plugin, () -> {
             for (ModifyData modifyData : new ArrayList<>(modifyDataList)) {
                 modifyData.check();
             }
@@ -49,7 +48,7 @@ public class PluginData {
     }
 
     public void disable() {
-        bukkitTask.cancel();
+        SchedulerHelper.cancelTask(bukkitTask);
     }
 
     public Plugin getPlugin() {

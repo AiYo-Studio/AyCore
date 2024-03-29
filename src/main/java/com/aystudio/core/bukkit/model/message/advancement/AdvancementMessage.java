@@ -1,6 +1,7 @@
 package com.aystudio.core.bukkit.model.message.advancement;
 
 import com.aystudio.core.bukkit.AyCore;
+import com.aystudio.core.bukkit.helper.SchedulerHelper;
 import com.aystudio.core.bukkit.model.message.BaseMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -34,8 +35,7 @@ public class AdvancementMessage extends BaseMessage {
             Arrays.stream(players).filter(OfflinePlayer::isOnline).forEach((player) -> {
                 AdvancementProgress progress = player.getAdvancementProgress(advancement);
                 progress.getRemainingCriteria().forEach(progress::awardCriteria);
-                Bukkit.getScheduler().runTaskLaterAsynchronously(AyCore.getInstance(),
-                        () -> progress.getAwardedCriteria().forEach(progress::revokeCriteria), 10L);
+                SchedulerHelper.runTaskAsync(AyCore.getInstance(), () -> progress.getAwardedCriteria().forEach(progress::revokeCriteria), 10L);
             });
         } finally {
             if (Bukkit.getAdvancement(ADVANCEMENT_ID) != null) {
