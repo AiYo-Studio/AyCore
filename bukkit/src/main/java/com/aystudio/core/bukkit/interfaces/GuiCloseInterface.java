@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 /**
  * @author Blank038
  */
+@Deprecated
 @FunctionalInterface
 public interface GuiCloseInterface {
 

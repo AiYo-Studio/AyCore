@@ -2,6 +2,10 @@ package com.aystudio.core.bukkit.util.inventory;
 
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.interfaces.GuiCloseInterface;
+import com.aystudio.core.bukkit.util.common.TextUtil;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -18,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * @author Blank038
@@ -25,17 +30,28 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class GuiModel implements InventoryHolder, Listener {
     /**
+     * -- GETTER --
+     * 获取界面标题
+     */
+    @Getter
+    private final String title;
+    /**
      * 创建的 Inventory
      */
     private final Inventory inventory;
     /**
      * 点击执行器
      */
-    private ExecuteInterface executeInterface;
+    private Consumer<InventoryClickEvent> clickConsumer;
     /**
      * 关闭执行器
      */
-    private GuiCloseInterface guiCloseInterface;
+    private Consumer<InventoryCloseEvent> closeConsumer;
+    /**
+     * -- SETTER --
+     * 设置是否关闭销毁
+     */
+    @Setter
     private boolean closeRemove, listener;
 
     /**
@@ -45,8 +61,9 @@ public class GuiModel implements InventoryHolder, Listener {
      * @param size  界面大小
      */
     public GuiModel(String title, int size) {
-        inventory = Bukkit.createInventory(this, size, title.replace("&", "§"));
-        closeRemove = true;
+        this.title = TextUtil.formatHexColor(title);
+        this.inventory = Bukkit.createInventory(this, size, title);
+        this.closeRemove = true;
     }
 
     /**
@@ -76,15 +93,6 @@ public class GuiModel implements InventoryHolder, Listener {
      */
     public boolean closeRemove() {
         return closeRemove;
-    }
-
-    /**
-     * 设置是否关闭销毁
-     *
-     * @param remove 是否销毁
-     */
-    public void setCloseRemove(boolean remove) {
-        closeRemove = remove;
     }
 
     /**
@@ -136,21 +144,17 @@ public class GuiModel implements InventoryHolder, Listener {
     }
 
     /**
-     * 获取界面标题
-     *
-     * @return Inventory 的 Title
-     */
-    public String getTitle() {
-        return inventory.getTitle();
-    }
-
-    /**
      * 设置点击执行内容
      *
      * @param executeInterface 点击执行器
      */
+    @Deprecated
     public void execute(ExecuteInterface executeInterface) {
-        this.executeInterface = executeInterface;
+        this.clickConsumer = executeInterface::execute;
+    }
+
+    public void onClick(Consumer<InventoryClickEvent> consumer) {
+        this.clickConsumer = consumer;
     }
 
     /**
@@ -158,8 +162,13 @@ public class GuiModel implements InventoryHolder, Listener {
      *
      * @param guiCloseInterface 关闭执行器
      */
+    @Deprecated
     public void setCloseInterface(GuiCloseInterface guiCloseInterface) {
-        this.guiCloseInterface = guiCloseInterface;
+        this.closeConsumer = guiCloseInterface::execute;
+    }
+
+    public void onClose(Consumer<InventoryCloseEvent> consumer) {
+        this.closeConsumer = consumer;
     }
 
     /**
@@ -168,8 +177,8 @@ public class GuiModel implements InventoryHolder, Listener {
      * @param event 关闭事件
      */
     private void onGuiClose(InventoryCloseEvent event) {
-        if (guiCloseInterface != null) {
-            guiCloseInterface.execute(event);
+        if (closeConsumer != null) {
+            closeConsumer.accept(event);
         }
         if (closeRemove) {
             this.unregisterListener(false);
@@ -182,10 +191,10 @@ public class GuiModel implements InventoryHolder, Listener {
      * @param e 开始执行
      */
     private void run(InventoryClickEvent e) {
-        if (executeInterface == null) {
+        if (clickConsumer == null) {
             return;
         }
-        executeInterface.execute(e);
+        clickConsumer.accept(e);
     }
 
     /**
@@ -194,7 +203,7 @@ public class GuiModel implements InventoryHolder, Listener {
      * @return 目标Inventory
      */
     @Override
-    public Inventory getInventory() {
+    public @NonNull Inventory getInventory() {
         return inventory;
     }
 

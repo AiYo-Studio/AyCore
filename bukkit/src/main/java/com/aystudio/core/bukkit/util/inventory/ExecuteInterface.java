@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 /**
  * @author Blank038
  */
+@Deprecated
 @FunctionalInterface
 public interface ExecuteInterface {
 
