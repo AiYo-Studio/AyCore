@@ -15,7 +15,7 @@ public enum CoreTypeEnum {
         public CoreTypeEnum checkAndInit() {
             if (ReflectionUtil.hasClass("catserver.api.bukkit.event.ForgeEvent")) {
                 this.listener = true;
-                ForgeInject.getInstance().setForgeListener(new CatServerModel());
+                ForgeInject.setForgeListenerHandler(new CatServerModel());
                 LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aCatServer");
             }
             return this;
@@ -26,7 +26,7 @@ public enum CoreTypeEnum {
         public CoreTypeEnum checkAndInit() {
             if (ReflectionUtil.hasClass("red.mohist.api.event.BukkitHookForgeEvent")) {
                 this.listener = true;
-                ForgeInject.getInstance().setForgeListener(new MohistModel());
+                ForgeInject.setForgeListenerHandler(new MohistModel());
                 LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMohist");
             }
             return this;
@@ -37,7 +37,7 @@ public enum CoreTypeEnum {
         public CoreTypeEnum checkAndInit() {
             if (ReflectionUtil.hasClass("org.magmafoundation.magma.api.events.ForgeEvents")) {
                 this.listener = true;
-                ForgeInject.getInstance().setForgeListener(new MagmaModel());
+                ForgeInject.setForgeListenerHandler(new MagmaModel());
                 LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMagma");
             }
             return this;

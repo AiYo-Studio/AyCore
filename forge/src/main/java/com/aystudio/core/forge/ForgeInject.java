@@ -20,7 +20,7 @@ public class ForgeInject implements ILink {
     private static ForgeInject instance;
     @Getter
     @Setter
-    private IForgeListenHandler forgeListener;
+    private static IForgeListenHandler forgeListenerHandler;
 
     public ForgeInject() {
         instance = this;
@@ -42,5 +42,10 @@ public class ForgeInject implements ILink {
         } else {
             LoggerUtil.getOrRegister(AyCore.class).log("&f无挂钩核心载入");
         }
+    }
+
+    @Deprecated
+    public IForgeListenHandler getForgeListener() {
+        return forgeListenerHandler;
     }
 }

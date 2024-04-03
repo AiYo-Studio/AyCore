@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Blank038
@@ -30,23 +31,21 @@ public interface IForgeListenHandler extends Listener {
     }
 
     class RegisterManager {
-        public static final HashMap<Listener, List<Method>> METHOD_LIST = new HashMap<>(), FORGE_EVENT_METHOD_LIST = new HashMap<>();
+        public static final Map<Listener, List<Method>> METHOD_LIST = new HashMap<>(),
+                FORGE_EVENT_METHOD_LIST = new HashMap<>();
 
         public static void registerMethods(Listener listener) {
             Class<? extends Listener> listenerClass = listener.getClass();
             for (Method method : listenerClass.getDeclaredMethods()) {
-                if (method.getParameterCount() == 1 && method.getAnnotation(SubscribeEvent.class) != null) {
-                    if (method.getParameterTypes()[0].equals(ForgeEvent.class)) {
-                        if (!RegisterManager.FORGE_EVENT_METHOD_LIST.containsKey(listener)) {
-                            RegisterManager.FORGE_EVENT_METHOD_LIST.put(listener, new ArrayList<>());
-                        }
-                        RegisterManager.FORGE_EVENT_METHOD_LIST.get(listener).add(method);
-                    } else {
-                        if (!RegisterManager.METHOD_LIST.containsKey(listener)) {
-                            RegisterManager.METHOD_LIST.put(listener, new ArrayList<>());
-                        }
-                        RegisterManager.METHOD_LIST.get(listener).add(method);
-                    }
+                if (method.getParameterCount() != 1 || method.getAnnotation(SubscribeEvent.class) == null) {
+                    continue;
+                }
+                if (method.getParameterTypes()[0].equals(ForgeEvent.class)) {
+                    RegisterManager.FORGE_EVENT_METHOD_LIST.putIfAbsent(listener, new ArrayList<>());
+                    RegisterManager.FORGE_EVENT_METHOD_LIST.get(listener).add(method);
+                } else {
+                    RegisterManager.METHOD_LIST.putIfAbsent(listener, new ArrayList<>());
+                    RegisterManager.METHOD_LIST.get(listener).add(method);
                 }
             }
         }
