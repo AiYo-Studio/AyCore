@@ -1,14 +1,15 @@
 package com.aystudio.core.forge;
 
 import com.aystudio.core.bukkit.AyCore;
-import com.aystudio.core.bukkit.util.common.ReflectionUtil;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
+import com.aystudio.core.common.data.CommonData;
 import com.aystudio.core.common.link.ILink;
-import com.aystudio.core.forge.model.CatServerModel;
-import com.aystudio.core.forge.model.MagmaModel;
-import com.aystudio.core.forge.model.MohistModel;
+import com.aystudio.core.forge.enums.CoreTypeEnum;
+import com.aystudio.core.forge.hook.bukkit.nms.impl.Forge112Impl;
 import lombok.Getter;
-import org.bukkit.Bukkit;
+import lombok.Setter;
+
+import java.util.Arrays;
 
 /**
  * @author Blank038
@@ -18,28 +19,28 @@ public class ForgeInject implements ILink {
     @Getter
     private static ForgeInject instance;
     @Getter
+    @Setter
     private IForgeListenHandler forgeListener;
 
     public ForgeInject() {
         instance = this;
-        // 注册 Forge 事件监听
-        boolean forward = AyCore.getInstance().getConfig().getBoolean("forward_forge_event", true);
-        if (forward && ReflectionUtil.hasClass("catserver.api.bukkit.event.ForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new CatServerModel()), AyCore.getInstance());
-            LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aCatServer");
-        } else if (forward && ReflectionUtil.hasClass("red.mohist.api.event.BukkitHookForgeEvent")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new MohistModel()), AyCore.getInstance());
-            LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMohist");
-        } else if (forward && ReflectionUtil.hasClass("org.magmafoundation.magma.api.events.ForgeEvents")) {
-            Bukkit.getPluginManager().registerEvents((forgeListener = new MagmaModel()), AyCore.getInstance());
-            LoggerUtil.getOrRegister(AyCore.class).log("&f载入挂钩核心: §aMagma");
-        } else {
-            LoggerUtil.getOrRegister(AyCore.class).log("&f无挂钩核心载入");
+        switch (CommonData.coreVersion) {
+            case "v1_12_R1":
+                AyCore.getInstance().setNMSClass(new Forge112Impl());
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onLoad() {
-
+        // 注册 Forge 事件监听
+        boolean forward = AyCore.getInstance().getConfig().getBoolean("forward_forge_event", true);
+        if (forward) {
+            Arrays.stream(CoreTypeEnum.values()).forEach((e) -> e.checkAndInit().registerListener());
+        } else {
+            LoggerUtil.getOrRegister(AyCore.class).log("&f无挂钩核心载入");
+        }
     }
 }

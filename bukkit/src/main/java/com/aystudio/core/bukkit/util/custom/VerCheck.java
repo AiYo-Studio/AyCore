@@ -1,11 +1,15 @@
 package com.aystudio.core.bukkit.util.custom;
 
+import com.aystudio.core.bukkit.AyCore;
+import com.aystudio.core.common.data.CommonData;
+import lombok.Getter;
 import org.bukkit.plugin.Plugin;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.logging.Level;
 
 /**
  * 目标插件版本检测
@@ -16,6 +20,7 @@ import java.net.URL;
 public class VerCheck {
     private final String currentVersion;
     private String version;
+    @Getter
     private boolean error;
 
     public VerCheck(Plugin plugin, String url) {
@@ -32,7 +37,10 @@ public class VerCheck {
             br.close();
             isr.close();
             is.close();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            if (CommonData.debug) {
+                AyCore.getInstance().getLogger().log(Level.SEVERE, e, () -> "版本检测异常");
+            }
             this.error = true;
         }
     }
@@ -50,12 +58,4 @@ public class VerCheck {
         return currentVersion.equals(this.version);
     }
 
-    /**
-     * 获取过程是否异常
-     *
-     * @return 是否异常
-     */
-    public boolean isError() {
-        return this.error;
-    }
 }

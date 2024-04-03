@@ -10,6 +10,11 @@ import org.bukkit.inventory.ItemStack;
  */
 public class Forge112Impl extends v1_12_R1 implements FMethodClass {
 
+    @Override
+    public String getVID() {
+        return super.getVID() + "-Forge";
+    }
+
     /**
      * 将 net.minecraft.item.ItemStack 转换为 org.bukkit.inventory.ItemStack
      *

@@ -11,7 +11,6 @@ import com.aystudio.core.pixelmon.api.sprite.SpriteHelper;
 import com.aystudio.core.pixelmon.api.stats.StatsHelper;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
@@ -22,16 +21,22 @@ import java.lang.reflect.Field;
 @SuppressWarnings("unused")
 public class PokemonAPI implements ILink {
     @Getter
-    @Setter
     private static PokemonAPI instance;
     public static boolean old;
 
 
+    @Getter
     private IForgeListenHandler forgeListener;
     private PixelmonI18n lang;
     private SpriteHelper sh;
+    @Getter
     private StatsHelper statsHelper;
+    @Getter
     private EnumPixelmon enumPixelmon;
+
+    public PokemonAPI() {
+        instance = this;
+    }
 
     public void onLoad() {
         switch ((enumPixelmon = getPixelmonType())) {
@@ -39,12 +44,7 @@ public class PokemonAPI implements ILink {
                 this.setupLang();
                 statsHelper = new StatsHelper(this);
                 sh = new SpriteHelper();
-                LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonReforged 版本: &a" + getVersion(EnumPixelmon.PIXELMON_REFORGED));
-                LoggerUtil.getOrRegister(AyCore.class).log("&f成功加载: &aPokemonAPI");
-                break;
-            case PIXELMON_GENERATIONS:
-                this.setupLang();
-                LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonGenerations 版本: &a" + getVersion(EnumPixelmon.PIXELMON_GENERATIONS));
+                LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonReforged 版本: &a" + this.getVersion(EnumPixelmon.PIXELMON_REFORGED));
                 LoggerUtil.getOrRegister(AyCore.class).log("&f成功加载: &aPokemonAPI");
                 break;
             case NONE:
@@ -92,36 +92,11 @@ public class PokemonAPI implements ILink {
         return sh;
     }
 
-    public IForgeListenHandler getForgeListener() {
-        return this.forgeListener;
-    }
-
-    /**
-     * 获取当前 Pixelmon 目标类型
-     * 仅会检测: PixelmonReforged(重铸), PixelmonGenerations(世代), None(无)
-     *
-     * @return Pixelmon 目标类型
-     */
-    public EnumPixelmon getEnumPixelmon() {
-        return enumPixelmon;
-    }
-
     private EnumPixelmon getPixelmonType() {
         if (ReflectionUtil.hasClass("com.pixelmonmod.pixelmon.Pixelmon")) {
             return EnumPixelmon.PIXELMON_REFORGED;
-        } else if (ReflectionUtil.hasClass("com.pixelmongenerations.core.Pixelmon")) {
-            return EnumPixelmon.PIXELMON_GENERATIONS;
         }
         return EnumPixelmon.NONE;
-    }
-
-    /**
-     * 获取 Pokemon 信息处理类
-     *
-     * @return Pokemon 信息处理类
-     */
-    public StatsHelper getStatsHelper() {
-        return statsHelper;
     }
 
     public void setupLang() {
@@ -143,16 +118,13 @@ public class PokemonAPI implements ILink {
     }
 
     public String getVersion(EnumPixelmon enumPixelmon) {
-        String version = "获取失败";
+        String version;
         try {
             Class<?> c = Class.forName(enumPixelmon.getPackage());
             Field field = c.getDeclaredField("VERSION");
             version = (String) field.get(null);
             return version;
         } catch (Exception e) {
-            if (AyCore.getInstance().getConfig().getBoolean("debug")) {
-                AyCore.getInstance().getLogger().severe(e.toString());
-            }
             version = Pixelmon.getVersion();
         }
         return version;

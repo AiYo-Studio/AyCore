@@ -7,6 +7,7 @@ import com.aystudio.core.bukkit.listener.PluginStatusListener;
 import com.aystudio.core.bukkit.platform.IPlatformApi;
 import com.aystudio.core.bukkit.plugin.AyPlugin;
 import com.aystudio.core.bukkit.thread.ThreadProcessor;
+import com.aystudio.core.common.data.CommonData;
 import com.aystudio.core.common.libraries.TempLibrary;
 import com.aystudio.core.common.link.ILink;
 import com.google.gson.*;
@@ -34,10 +35,6 @@ import java.util.Map;
 @Setter
 @SuppressWarnings("unused")
 public class AyCore extends AyPlugin {
-    /**
-     * -- GETTER --
-     * 获得 Blank038API 主类实例
-     */
     @Getter
     private static AyCore instance;
     @Getter
@@ -45,28 +42,13 @@ public class AyCore extends AyPlugin {
     private static IPlatformApi platformApi;
     @Deprecated
     private static Object pokemonAPI;
-    /**
-     * -- GETTER --
-     * 获取命令注册器
-     */
     @Getter
     private static CommandRegistry commandRegistry;
     public static final Gson GSON = new GsonBuilder().create();
-
-    /**
-     * -- GETTER --
-     * 获取按键监听通道
-     */
     private KeyChannel keyChannel;
     private INMSClass nmsClass;
     private boolean sameHikariVersion;
     public Map<Plugin, PluginData> dataMap = new HashMap<>();
-
-    /**
-     * 获取 PokemonAPI 类对象
-     *
-     * @return PokemonAPI 对象
-     */
     @Deprecated
     public static Object getPokemonAPI() {
         return pokemonAPI;
@@ -110,11 +92,18 @@ public class AyCore extends AyPlugin {
         this.getConsoleLogger().log(false, "   &3AyCore &bv" + getDescription().getVersion());
         this.getConsoleLogger().log(false, " ");
         this.getConsoleLogger().log(false, "&f[&eAC&f] &6AyCore //>");
-        this.init();
         // 注入 Forge 模块
-        ILink.newLink("com.aystudio.core.forge.ForgeInject");
+        ILink.newLink("com.aystudio.core.forge.ForgeInject").onLoad();
+        // 初始化内部方法
+        this.init();
         // 初始化 PokemonAPI
         ((ILink) pokemonAPI).onLoad();
+        // 检测 NMS 版本
+        if (this.nmsClass == null) {
+            this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
+        } else {
+            this.getConsoleLogger().log("&f成功加载: &a" + nmsClass.getVID());
+        }
         // 统计和更新检测
         new Metrics(this);
         VerCheck check = new VerCheck(this, "https://www.mc9y.com/checks/{plugin}.txt");
@@ -148,6 +137,7 @@ public class AyCore extends AyPlugin {
         this.getDataFolder().mkdir();
         this.saveDefaultConfig();
         this.reloadConfig();
+        CommonData.debug = this.getConfig().getBoolean("debug");
         ((ILink) pokemonAPI).updateField("old", getConfig().getBoolean("old"));
     }
 
@@ -156,23 +146,18 @@ public class AyCore extends AyPlugin {
         Bukkit.getPluginManager().registerEvents(new PluginStatusListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
         // 检查 nms
-        String version = "未知";
-        try {
-            version = Bukkit.getServer().getClass().getPackage().toString().replace(".", ",").split(",")[3];
-        } catch (Exception ignored) {
+        if (this.nmsClass == null) {
+            switch (CommonData.coreVersion) {
+                case "v1_12_R1":
+                    this.setNMSClass(new v1_12_R1());
+                    break;
+                case "v1_16_R1":
+                    this.setNMSClass(new v1_16_R1());
+                    break;
+                default:
+                    break;
+            }
         }
-        switch (version) {
-            case "v1_12_R1":
-                this.setNMSClass(new v1_12_R1());
-                break;
-            case "v1_16_R1":
-                this.setNMSClass(new v1_16_R1());
-                break;
-            default:
-                this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
-                break;
-        }
-        this.getConsoleLogger().log("&f成功加载: &aAyCoreApi");
     }
 
     /**
@@ -189,9 +174,8 @@ public class AyCore extends AyPlugin {
         }
     }
 
-    private void setNMSClass(INMSClass nmsClass) {
+    public void setNMSClass(INMSClass nmsClass) {
         this.nmsClass = nmsClass;
         nmsClass.registerChannel(this);
-        this.getConsoleLogger().log("&f成功加载: &a" + nmsClass.getVID());
     }
 }

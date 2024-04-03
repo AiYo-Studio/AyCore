@@ -4,6 +4,7 @@ package com.aystudio.core.bukkit.nms;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.nms.packet.EnumPacket;
 import com.aystudio.core.bukkit.util.key.KeyListener;
+import com.aystudio.core.common.data.CommonData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public abstract class INMSClass {
 
     public INMSClass() {
         try {
-            this.sendPacketParamsClass = Class.forName("net.minecraft.server." + this.getVID() + ".Packet");
+            this.sendPacketParamsClass = Class.forName("net.minecraft.server." + CommonData.coreVersion + ".Packet");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -77,7 +78,7 @@ public abstract class INMSClass {
 
     public Object createChatComponentText(String text) {
         try {
-            Class<?> c = Class.forName("net.minecraft.server." + this.getVID() + ".ChatComponentText");
+            Class<?> c = Class.forName("net.minecraft.server." + CommonData.coreVersion + ".ChatComponentText");
             Constructor<?> constructor = c.getConstructor(String.class);
             return constructor.newInstance(ChatColor.translateAlternateColorCodes('&', text));
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -88,7 +89,7 @@ public abstract class INMSClass {
 
     public Class<?> classForName(String path) {
         try {
-            return Class.forName(path.replace("?", this.getVID()));
+            return Class.forName(path.replace("?", CommonData.coreVersion));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -97,12 +98,12 @@ public abstract class INMSClass {
 
     public Object createPacket(EnumPacket packet, Object... params) {
         try {
-            Class<?> c = Class.forName(packet.getClassPath().replace("?", this.getVID()));
+            Class<?> c = Class.forName(packet.getClassPath().replace("?", CommonData.coreVersion));
             Object[] tarParams = packet.getParams();
             Class<?>[] classes = new Class[tarParams.length];
             for (int i = 0; i < tarParams.length; i++) {
                 if (tarParams[i] instanceof String) {
-                    classes[i] = Class.forName(((String) tarParams[i]).replace("?", this.getVID()));
+                    classes[i] = Class.forName(((String) tarParams[i]).replace("?", CommonData.coreVersion));
                 } else {
                     classes[i] = (Class<?>) tarParams[i];
                 }

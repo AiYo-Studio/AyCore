@@ -2,8 +2,7 @@ package com.aystudio.core.pixelmon.api.enums;
 
 public enum EnumPixelmon {
     NONE("none"),
-    PIXELMON_REFORGED("com.pixelmonmod.pixelmon.Pixelmon"),
-    PIXELMON_GENERATIONS("com.pixelmongenerations.core.Pixelmon");
+    PIXELMON_REFORGED("com.pixelmonmod.pixelmon.Pixelmon");
 
     private final String pack;
 

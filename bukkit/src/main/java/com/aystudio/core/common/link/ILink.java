@@ -15,7 +15,7 @@ public interface ILink {
         try {
             return (ILink) Class.forName(classz).newInstance();
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            AyCore.getInstance().getLogger().log(Level.SEVERE, e, () -> "初始化 com.aystudio.core.pixelmon.PokemonAPI 接口出现异常");
+            AyCore.getInstance().getLogger().log(Level.SEVERE, e, () -> "初始化 " + classz + " 接口出现异常");
         }
         return null;
     }

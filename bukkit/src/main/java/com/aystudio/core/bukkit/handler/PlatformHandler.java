@@ -4,6 +4,8 @@ import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.helper.PlatformHelper;
 import com.aystudio.core.bukkit.platform.IPlatformApi;
 import com.aystudio.core.bukkit.platform.impl.bukkit.BukkitPlatformApi;
+import com.aystudio.core.common.data.CommonData;
+import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
 
@@ -23,6 +25,13 @@ public class PlatformHandler {
         } else {
             setPlatform(new BukkitPlatformApi());
         }
+        // 初始化版本
+        String version = "未知";
+        try {
+            version = Bukkit.getServer().getClass().getPackage().toString().replace(".", ",").split(",")[3];
+        } catch (Exception ignored) {
+        }
+        CommonData.coreVersion = version;
     }
 
     public static void setPlatform(IPlatformApi platform) {
