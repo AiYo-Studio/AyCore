@@ -31,30 +31,31 @@ public class AbstractForgeListenHandler implements IForgeListenHandler {
     @Override
     public void registerListener(Plugin plugin, Listener listener, EventPriority priority) {
         RegisterManager.registerMethods(listener);
-        if (RegisterManager.METHOD_LIST.containsKey(listener)) {
-            RegisteredListener registeredListener = new RegisteredListener(listener, (listener1, event) -> {
-                if (RegisterManager.METHOD_LIST.containsKey(listener1)) {
-                    RegisterManager.METHOD_LIST.get(listener1).forEach((method -> {
-                        try {
-                            method.invoke(listener1, ReflectionUtil.invokeMethod(event, forgeMethod));
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    }));
-                }
-                if (RegisterManager.FORGE_EVENT_METHOD_LIST.containsKey(listener1)) {
-                    RegisterManager.FORGE_EVENT_METHOD_LIST.get(listener1).forEach((method -> {
-                        try {
-                            method.invoke(listener1, new ForgeEvent((Event) ReflectionUtil.invokeMethod(event, forgeMethod)));
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    }));
-                }
-            }, priority, plugin, false);
-            Object eventObj = ReflectionUtil.invokeMethod(forgeEventClass, "getHandlerList");
-            ReflectionUtil.invokeMethod(eventObj, "register", new Class[]{RegisteredListener.class}, registeredListener);
+        if (!RegisterManager.METHOD_LIST.containsKey(listener)) {
+            return;
         }
+        RegisteredListener registeredListener = new RegisteredListener(listener, (listener1, event) -> {
+            if (RegisterManager.METHOD_LIST.containsKey(listener1)) {
+                RegisterManager.METHOD_LIST.get(listener1).forEach((method -> {
+                    try {
+                        method.invoke(listener1, ReflectionUtil.invokeMethod(event, forgeMethod));
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }));
+            }
+            if (RegisterManager.FORGE_EVENT_METHOD_LIST.containsKey(listener1)) {
+                RegisterManager.FORGE_EVENT_METHOD_LIST.get(listener1).forEach((method -> {
+                    try {
+                        method.invoke(listener1, new ForgeEvent((Event) ReflectionUtil.invokeMethod(event, forgeMethod)));
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }));
+            }
+        }, priority, plugin, false);
+        Object eventObj = ReflectionUtil.invokeMethod(forgeEventClass, "getHandlerList");
+        ReflectionUtil.invokeMethod(eventObj, "register", new Class[]{RegisteredListener.class}, registeredListener);
     }
 
     @Override
