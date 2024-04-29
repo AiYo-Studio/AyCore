@@ -40,19 +40,15 @@ public class AyCore extends AyPlugin {
     @Getter
     @Setter
     private static IPlatformApi platformApi;
-    @Deprecated
-    private static Object pokemonAPI;
     @Getter
     private static CommandRegistry commandRegistry;
     public static final Gson GSON = new GsonBuilder().create();
+
+    private ILink pokemonApi;
     private KeyChannel keyChannel;
     private INMSClass nmsClass;
     private boolean sameHikariVersion;
     public Map<Plugin, PluginData> dataMap = new HashMap<>();
-    @Deprecated
-    public static Object getPokemonAPI() {
-        return pokemonAPI;
-    }
 
     /**
      * 获取 NMS 接口对象
@@ -70,7 +66,7 @@ public class AyCore extends AyPlugin {
         instance = this;
         PlatformHandler.initPlatform();
         // 初始化 PokemonAPI
-        pokemonAPI = ILink.newLink("com.aystudio.core.pixelmon.PokemonAPI");
+        pokemonApi = ILink.newLink("com.aystudio.core.pixelmon.PokemonAPI");
         commandRegistry = new CommandRegistry();
         // 载入配置和注册核心内容
         this.loadConfig();
@@ -97,7 +93,7 @@ public class AyCore extends AyPlugin {
         // 初始化内部方法
         this.init();
         // 初始化 PokemonAPI
-        ((ILink) pokemonAPI).onLoad();
+        pokemonApi.onLoad();
         // 检测 NMS 版本
         if (this.nmsClass == null) {
             this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
@@ -138,7 +134,7 @@ public class AyCore extends AyPlugin {
         this.saveDefaultConfig();
         this.reloadConfig();
         CommonData.debug = this.getConfig().getBoolean("debug");
-        ((ILink) pokemonAPI).updateField("old", getConfig().getBoolean("old"));
+        pokemonApi.updateField("old", getConfig().getBoolean("old"));
     }
 
     public void init() {

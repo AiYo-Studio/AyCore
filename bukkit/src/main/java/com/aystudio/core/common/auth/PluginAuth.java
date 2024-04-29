@@ -45,7 +45,7 @@ public class PluginAuth {
                 byte[] bs = byteArray.toByteArray();
                 socket.shutdownInput();
                 byteArray.close();
-                Method method = AyCore.class.getClassLoader().getClass().getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
+                Method method = ClassLoader.class.getDeclaredMethod("defineClass", String.class, byte[].class, int.class, int.class);
                 method.setAccessible(true);
                 Class<?> c = (Class<?>) method.invoke(AyCore.class.getClassLoader(), classPath, bs, 0, bs.length);
                 method.setAccessible(false);
