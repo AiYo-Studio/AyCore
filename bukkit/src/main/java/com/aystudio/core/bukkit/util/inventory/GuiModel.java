@@ -62,7 +62,7 @@ public class GuiModel implements InventoryHolder, Listener {
      */
     public GuiModel(String title, int size) {
         this.title = TextUtil.formatHexColor(title);
-        this.inventory = Bukkit.createInventory(this, size, title);
+        this.inventory = Bukkit.createInventory(this, size, this.title);
         this.closeRemove = true;
     }
 
