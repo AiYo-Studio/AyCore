@@ -69,8 +69,8 @@ publishing {
             name = "ayStudioRepository"
             url = "https://repo.mc9y.com/snapshots"
             credentials {
-                username = "$ayStudioRepositoryUsername"
-                password = "$ayStudioRepositoryPassword"
+                username = findProperty("ayStudioRepositoryUsername")
+                password = findProperty("ayStudioRepositoryUsername")
             }
             authentication {
                 basic(BasicAuthentication)
