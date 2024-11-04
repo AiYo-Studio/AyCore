@@ -1,0 +1,86 @@
+import org.apache.tools.ant.filters.ReplaceTokens;
+
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:6.+'
+    }
+}
+plugins {
+    id 'signing'
+    id 'maven-publish'
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+
+group = "com.aystudio.core"
+version = "1.16.5-R0.1"
+archivesBaseName = "AyCore-Pixelmon"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+minecraft {
+    mappings channel: 'official', version: '1.16.5'
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.35'
+    implementation fileTree(dir: "${rootProject.projectDir}/libs/pixelmon/v1_16_5", includes: ["*.jar"])
+    implementation(project(":bukkit"))
+    implementation(project(":pixelmon:base"))
+    implementation "org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT"
+    implementation "org.bukkit:bukkit:1.16.5-R0.1-SNAPSHOT"
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.yml'
+        filter ReplaceTokens, tokens: ["version": project.property("version")]
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
+    }
+}
+
+processResources {
+    setFilteringCharset("UTF-8")
+    expand project.properties
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    archiveBaseName = "AyCore-Pixelmon"
+    from project(':pixelmon:base').sourceSets.main.output
+    exclude "**/com/pixelmonmod/**"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact("$buildDir/libs/${project.archivesBaseName}-${project.version}.jar")
+        }
+    }
+    repositories {
+        maven {
+            name = "ayStudioRepository"
+            url = "https://repo.mc9y.com/snapshots"
+            credentials {
+                username = findProperty("ayStudioRepositoryUsername")
+                password = findProperty("ayStudioRepositoryPassword")
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}

@@ -8,3 +8,4 @@ pluginManagement {
 rootProject.name = 'AyCore'
 
 include 'bukkit', 'folia', 'forge'
+include ':pixelmon:base', ':pixelmon:v1_12_R1', ':pixelmon:v1_16_R3'

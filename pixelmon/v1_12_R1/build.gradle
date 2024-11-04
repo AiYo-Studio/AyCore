@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        maven { url = uri("https://plugins.gradle.org/m2/") }
+        maven { url = "https://files.minecraftforge.net/maven" }
+        maven { url = "https://repo.mc9y.com/snapshots" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:6.+'
+    }
+}
+
+plugins {
+    id 'maven-publish'
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+group = "com.aystudio.core"
+version = "1.12.2-R0.1"
+archivesBaseName = "AyCore-Pixelmon"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+minecraft {
+    mappings channel: 'snapshot', version: '20171003-1.12'
+}
+
+repositories {
+    maven {
+        name = "AyStudio-Repository"
+        url = "https://repo.mc9y.com/snapshots"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "${rootProject.projectDir}/libs/pixelmon/v1_12_2", includes: ["*.jar"])
+    implementation(project(":bukkit"))
+    implementation(project(":pixelmon:base"))
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+    implementation "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
+    implementation "org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    archiveBaseName = "AyCore-Pixelmon"
+    from project(':pixelmon:base').sourceSets.main.output
+    exclude "**/com/pixelmonmod/**"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact("$buildDir/libs/${project.archivesBaseName}-${project.version}.jar")
+        }
+    }
+    repositories {
+        maven {
+            name = "ayStudioRepository"
+            url = "https://repo.mc9y.com/snapshots"
+            credentials {
+                username = findProperty("ayStudioRepositoryUsername")
+                password = findProperty("ayStudioRepositoryPassword")
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}

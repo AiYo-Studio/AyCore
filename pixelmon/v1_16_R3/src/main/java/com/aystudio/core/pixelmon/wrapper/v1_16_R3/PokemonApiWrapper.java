@@ -1,0 +1,17 @@
+package com.aystudio.core.pixelmon.wrapper.v1_16_R3;
+
+import com.aystudio.core.pixelmon.PokemonAPI;
+import com.aystudio.core.pixelmon.wrapper.IPokemonApiWrapper;
+
+/**
+ * @author Blank038
+ */
+public class PokemonApiWrapper implements IPokemonApiWrapper {
+
+    public PokemonApiWrapper() {
+        PokemonAPI api = PokemonAPI.getInstance();
+        api.setLanguage(new I18nWrapper());
+        api.setSpriteHelper(new SpriteHelperWrapper());
+        api.setStatsHelper(new StatsHelperWrapper());
+    }
+}
