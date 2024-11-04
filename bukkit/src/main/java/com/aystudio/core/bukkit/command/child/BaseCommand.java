@@ -1,5 +1,6 @@
 package com.aystudio.core.bukkit.command.child;
 
+import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.command.registry.CustomCommand;
 import com.aystudio.core.bukkit.exception.ClassExistedException;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import java.util.*;
  */
 public class BaseCommand {
     private final List<String> classes = new ArrayList<>();
-    private final HashMap<String, ExecuteMethod> methodMap = new HashMap<>();
+    private final Map<String, ExecuteMethod> methodMap = new HashMap<>();
     private final List<ExecuteMethod> notParametersMethods = new ArrayList<>();
 
     /**
@@ -26,7 +27,7 @@ public class BaseCommand {
             try {
                 throw new ClassExistedException("Class " + ac.getName() + " is exists.");
             } catch (ClassExistedException e) {
-                e.printStackTrace();
+                AyCore.getInstance().getLogger().severe(e.toString());
             }
             return;
         }

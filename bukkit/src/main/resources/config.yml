@@ -5,20 +5,5 @@ hikari: true
 # 是否转发 ForgeEvent，如果关闭该设定会导致用到本插件 ForgeEvent 事件的插件失效
 # 但是不会再出现所谓的 '高占用' and '高耗时'
 forward_forge_event: true
-# 旧版词条
-old: false
-# 文本配置
-text:
-  shiny:
-    true: "是"
-    false: "否"
-  error: "无"
-  gender:
-    none: "未知"
-    male: "公"
-    female: "母"
-  common:
-    true: "是"
-    false: "否"
 # 是否开启 debug
 debug: false

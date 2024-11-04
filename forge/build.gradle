@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", includes: ["*.jar"])
+    implementation fileTree(dir: "${rootProject.projectDir}/libs/core", includes: ["*.jar"])
     implementation(project(":bukkit"))
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     implementation "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"

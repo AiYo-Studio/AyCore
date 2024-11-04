@@ -46,18 +46,19 @@ public class MySqlStorageHandler {
         Arrays.stream(initUpdateStatement).forEach(this::updateStatement);
         // 建立线程定时请求, 避免超时
         AyCore.getPlatformApi().runTaskTimerAsynchronously(plugin, () -> {
-            if (reconnection) {
-                this.dataSource.connect((statement) -> {
-                    ResultSet resultSet = null;
-                    try {
-                        resultSet = statement.executeQuery();
-                    } catch (SQLException throwable) {
-                        throwable.printStackTrace();
-                    } finally {
-                        this.dataSource.close(statement, resultSet);
-                    }
-                }, "show full columns from " + queryTable);
+            if (!reconnection) {
+                return;
             }
+            this.dataSource.connect((statement) -> {
+                ResultSet resultSet = null;
+                try {
+                    resultSet = statement.executeQuery();
+                } catch (SQLException throwable) {
+                    throwable.printStackTrace();
+                } finally {
+                    this.dataSource.close(statement, resultSet);
+                }
+            }, "show full columns from " + queryTable);
         }, 1200L, 1200L);
     }
 

@@ -37,7 +37,7 @@ public class ForgeInject implements ILink {
     public void onLoad() {
         // 注册 Forge 事件监听
         boolean forward = AyCore.getInstance().getConfig().getBoolean("forward_forge_event", true);
-        if (forward) {
+        if (forward && CommonData.coreVersion.equals("v1_12_R1")) {
             Arrays.stream(CoreTypeEnum.values()).forEach((e) -> e.checkAndInit().registerListener());
         } else {
             LoggerUtil.getOrRegister(AyCore.class).log("&f无挂钩核心载入");

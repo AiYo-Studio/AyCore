@@ -134,14 +134,12 @@ public class AyCore extends AyPlugin {
         this.saveDefaultConfig();
         this.reloadConfig();
         CommonData.debug = this.getConfig().getBoolean("debug");
-        pokemonApi.updateField("old", getConfig().getBoolean("old"));
     }
 
     public void init() {
         keyChannel = new KeyChannel();
         Bukkit.getPluginManager().registerEvents(new PluginStatusListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
-        // 检查 nms
         if (this.nmsClass == null) {
             switch (CommonData.coreVersion) {
                 case "v1_12_R1":

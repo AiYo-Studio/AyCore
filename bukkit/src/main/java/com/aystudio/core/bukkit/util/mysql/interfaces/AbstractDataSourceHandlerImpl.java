@@ -4,6 +4,7 @@ import com.aystudio.core.bukkit.interfaces.CustomExecute;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
+import java.util.logging.Level;
 
 /**
  * @author Blank038
@@ -12,13 +13,13 @@ import java.sql.*;
 public abstract class AbstractDataSourceHandlerImpl implements IDataSourceHandler {
     public static boolean SQL_STATUS = false;
 
-    private final JavaPlugin SOURCE_PLUGIN;
+    private final JavaPlugin sourcePlugin;
     private String SQL_URL, SQL_USER, SQL_PASSWORD;
     private Connection connection;
     private boolean debug;
 
     public AbstractDataSourceHandlerImpl(JavaPlugin plugin) {
-        this.SOURCE_PLUGIN = plugin;
+        this.sourcePlugin = plugin;
     }
 
     public void setData(String url, String user, String password) {
@@ -28,17 +29,17 @@ public abstract class AbstractDataSourceHandlerImpl implements IDataSourceHandle
     }
 
     public void connect(CustomExecute<PreparedStatement> executeModel, String sql) {
-        if (this.SOURCE_PLUGIN == null || !this.SOURCE_PLUGIN.isEnabled()) {
+        if (this.sourcePlugin == null || !this.sourcePlugin.isEnabled()) {
             return;
         }
         PreparedStatement statement = null;
         try {
             if (debug) {
-                this.SOURCE_PLUGIN.getLogger().info("MySQL 连接是否为空: " + (connection == null));
+                this.sourcePlugin.getLogger().info("MySQL 连接是否为空: " + (connection == null));
             }
             if (connection == null || connection.isClosed()) {
                 if (debug) {
-                    this.SOURCE_PLUGIN.getLogger().info("已重新从 MySQL 取得 Connection. ");
+                    this.sourcePlugin.getLogger().info("已重新从 MySQL 取得 Connection. ");
                 }
                 this.connection = this.getConnection();
             }
@@ -47,10 +48,7 @@ public abstract class AbstractDataSourceHandlerImpl implements IDataSourceHandle
         } catch (SQLException e) {
             SQL_STATUS = false;
             connection = this.getConnection();
-            if (debug) {
-                e.printStackTrace();
-            }
-            this.connect(executeModel, sql);
+            this.sourcePlugin.getLogger().log(Level.WARNING, e, () -> "SQL 执行出错: " + sql);
         } finally {
             this.close(statement, null);
         }
