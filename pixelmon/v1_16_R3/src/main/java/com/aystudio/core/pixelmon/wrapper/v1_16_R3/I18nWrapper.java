@@ -20,5 +20,6 @@ public class I18nWrapper extends PixelmonI18n {
             LanguageMap.loadFromJson(inputStream, biconsumer);
             this.values.putAll(builder.build());
         };
+        this.initialize();
     }
 }
