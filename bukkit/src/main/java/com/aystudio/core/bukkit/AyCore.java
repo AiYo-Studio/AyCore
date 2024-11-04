@@ -9,6 +9,7 @@ import com.aystudio.core.bukkit.plugin.AyPlugin;
 import com.aystudio.core.bukkit.thread.ThreadProcessor;
 import com.aystudio.core.common.data.CommonData;
 import com.aystudio.core.common.libraries.TempLibrary;
+import com.aystudio.core.common.libraries.loader.PixelmonLibraryLoader;
 import com.aystudio.core.common.link.ILink;
 import com.google.gson.*;
 import com.aystudio.core.bukkit.listener.CommandListener;
@@ -64,12 +65,16 @@ public class AyCore extends AyPlugin {
         super.onLoad();
         // 开始初始化
         instance = this;
+        // 载入配置和注册核心内容
+        this.loadConfig();
+        // 初始化平台
         PlatformHandler.initPlatform();
+        // 载入宝可梦模块(临时使用)
+        // TODO: 等待重构
+        new PixelmonLibraryLoader().pull();
         // 初始化 PokemonAPI
         pokemonApi = ILink.newLink("com.aystudio.core.pixelmon.PokemonAPI");
         commandRegistry = new CommandRegistry();
-        // 载入配置和注册核心内容
-        this.loadConfig();
         // 载入依赖
         this.getConsoleLogger().setPrefix("&f[&eAC&f] - ");
         this.getConsoleLogger().log(false, " ");
@@ -130,7 +135,6 @@ public class AyCore extends AyPlugin {
      * 载入插件配置文件
      */
     public void loadConfig() {
-        this.getDataFolder().mkdir();
         this.saveDefaultConfig();
         this.reloadConfig();
         CommonData.debug = this.getConfig().getBoolean("debug");

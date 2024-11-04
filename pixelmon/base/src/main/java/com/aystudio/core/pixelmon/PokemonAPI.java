@@ -45,8 +45,6 @@ public class PokemonAPI implements ILink {
         switch ((enumPixelmon = getPixelmonType())) {
             case PIXELMON_REFORGED:
                 this.setup();
-                LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonReforged 版本: &a" + this.getVersion(EnumPixelmon.PIXELMON_REFORGED));
-                LoggerUtil.getOrRegister(AyCore.class).log("&f成功加载: &aPokemonAPI");
                 break;
             case NONE:
             default:
@@ -86,6 +84,8 @@ public class PokemonAPI implements ILink {
         try {
             Class<?> classz = Class.forName("com.aystudio.core.pixelmon.wrapper." + path + ".PokemonApiWrapper");
             pokemonApiWrapper = (IPokemonApiWrapper) classz.newInstance();
+            LoggerUtil.getOrRegister(AyCore.class).log("&fPixelmonReforged 版本: &a" + this.getVersion(EnumPixelmon.PIXELMON_REFORGED));
+            LoggerUtil.getOrRegister(AyCore.class).log("&f成功加载: &aPokemonAPI");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
