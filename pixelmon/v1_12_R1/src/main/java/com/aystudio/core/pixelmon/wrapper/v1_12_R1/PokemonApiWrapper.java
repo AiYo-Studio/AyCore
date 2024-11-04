@@ -1,7 +1,6 @@
 package com.aystudio.core.pixelmon.wrapper.v1_12_R1;
 
 import com.aystudio.core.pixelmon.PokemonAPI;
-import com.aystudio.core.pixelmon.api.pokemon.PokemonUtil;
 import com.aystudio.core.pixelmon.wrapper.IPokemonApiWrapper;
 
 /**
