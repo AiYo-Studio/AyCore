@@ -3,10 +3,12 @@ plugins {
     id 'signing'
     id 'maven-publish'
 }
-version = "1.2.2-BETA"
-group = "com.aystudio.core"
 
-allprojects {
+version = "1.3.0-BETA"
+group = "com.aystudio.core"
+archivesBaseName = "AyCore"
+
+subprojects {
     apply plugin: 'java'
 
     repositories {
@@ -27,25 +29,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 jar {
     from project(':folia').sourceSets.main.output
     from project(':bukkit').sourceSets.main.output
+    from project(':forge').sourceSets.main.output
 }
 
 subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
-
-tasks.register('allJar', Jar) {
-    dependsOn subprojects.tasks.build
-    archivesBaseName = 'AyCore'
-    subprojects.each { subproject ->
-        from subproject.configurations.archives.allArtifacts.files.collect {
-            zipTree(it)
-        }
-    }
-}
-
-tasks.jar.enabled = false
-
-artifacts {
-    archives allJar
-}
 
 processResources {
     setFilteringCharset("UTF-8")
@@ -61,7 +48,7 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact("$buildDir/libs/${project.name}-${project.version}.jar")
+            artifact("$buildDir/libs/${project.archivesBaseName}-${project.version}.jar")
         }
     }
     repositories {
@@ -70,7 +57,7 @@ publishing {
             url = "https://repo.mc9y.com/snapshots"
             credentials {
                 username = findProperty("ayStudioRepositoryUsername")
-                password = findProperty("ayStudioRepositoryUsername")
+                password = findProperty("ayStudioRepositoryPassword")
             }
             authentication {
                 basic(BasicAuthentication)
