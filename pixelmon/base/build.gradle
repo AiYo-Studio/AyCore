@@ -26,11 +26,10 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: "${rootProject.projectDir}/libs/plugin", includes: ["*.jar"])
-    compileOnly(project(":bukkit"))
-    compileOnly(project(":forge"))
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
     implementation "org.spigotmc:spigot:1.12.2-R0.1-SNAPSHOT"
     implementation "org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT"
+    implementation "com.aystudio.core:AyCore:1.3.1-BETA"
 }
 
 tasks.withType(JavaCompile) {
