@@ -7,6 +7,7 @@ import com.aystudio.core.bukkit.listener.PluginStatusListener;
 import com.aystudio.core.bukkit.platform.IPlatformApi;
 import com.aystudio.core.bukkit.plugin.AyPlugin;
 import com.aystudio.core.bukkit.thread.ThreadProcessor;
+import com.aystudio.core.bukkit.util.mixed.PixelmonUtil;
 import com.aystudio.core.common.data.CommonData;
 import com.aystudio.core.common.libraries.TempLibrary;
 import com.aystudio.core.common.libraries.loader.PixelmonLibraryLoader;
@@ -34,7 +35,6 @@ import java.util.Map;
  */
 @Getter
 @Setter
-@SuppressWarnings("unused")
 public class AyCore extends AyPlugin {
     @Getter
     private static AyCore instance;
@@ -70,10 +70,12 @@ public class AyCore extends AyPlugin {
         // 初始化平台
         PlatformHandler.initPlatform();
         // 载入宝可梦模块(临时使用)
-        // TODO: 等待重构
-        new PixelmonLibraryLoader().pull();
-        // 初始化 PokemonAPI
-        pokemonApi = ILink.newLink("com.aystudio.core.pixelmon.PokemonAPI");
+        PixelmonUtil.checkAndRun(() -> {
+            // TODO: 等待重构
+            new PixelmonLibraryLoader().pull();
+            // 初始化 PokemonAPI
+            pokemonApi = ILink.newLink("com.aystudio.core.pixelmon.PokemonAPI");
+        }, null);
         commandRegistry = new CommandRegistry();
         // 载入依赖
         this.getConsoleLogger().setPrefix("&f[&eAC&f] - ");
@@ -98,7 +100,9 @@ public class AyCore extends AyPlugin {
         // 初始化内部方法
         this.init();
         // 初始化 PokemonAPI
-        pokemonApi.onLoad();
+        if (pokemonApi != null) {
+            pokemonApi.onLoad();
+        }
         // 检测 NMS 版本
         if (this.nmsClass == null) {
             this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
