@@ -4,7 +4,6 @@ import com.aystudio.core.pixelmon.PokemonAPI;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonFactory;
 import com.pixelmonmod.pixelmon.api.pokemon.species.Species;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
@@ -43,9 +42,7 @@ public class PokemonUtil {
     }
 
     public static String getPokemonUID(Pokemon pokemon) {
-        CompoundNBT nbt = new CompoundNBT();
-        pokemon.writeToNBT(nbt);
-        return nbt.getLong("UUIDLeast") + "," + nbt.getLong("UUIDMost");
+        return pokemon.getUUID().toString();
     }
 
     @Deprecated

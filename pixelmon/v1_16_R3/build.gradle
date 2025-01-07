@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
 group = "com.aystudio.core"
-version = "1.16.5-R0.1"
+version = "1.16.5-${rootProject.version}"
 archivesBaseName = "AyCore-Pixelmon"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)

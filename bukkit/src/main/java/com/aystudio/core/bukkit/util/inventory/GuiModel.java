@@ -52,7 +52,8 @@ public class GuiModel implements InventoryHolder, Listener {
      * 设置是否关闭销毁
      */
     @Setter
-    private boolean closeRemove, listener;
+    private boolean closeRemove;
+    private boolean listener;
 
     /**
      * 初始化 GuiModel
