@@ -1,2 +1,3 @@
-## PokemonAPI
-一个没有多大用处的API
+## AyCore
+
+基于 Bukkit 的开发库。
