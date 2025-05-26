@@ -2,6 +2,7 @@ package com.aystudio.core.bukkit;
 
 import com.aystudio.core.bukkit.command.BlankCommand;
 import com.aystudio.core.bukkit.command.registry.CommandRegistry;
+import com.aystudio.core.bukkit.cron.CronScheduler;
 import com.aystudio.core.bukkit.handler.PlatformHandler;
 import com.aystudio.core.bukkit.listener.PluginStatusListener;
 import com.aystudio.core.bukkit.platform.IPlatformApi;
@@ -86,6 +87,11 @@ public class AyCore extends AyPlugin {
         // TODO: Code that will be deleted in the future
         TempLibrary.loadLibraries();
         this.getConsoleLogger().log(false, " ");
+
+        CronScheduler scheduler = CronScheduler.create(this);
+        scheduler.createJob("test", "test", "* * * * * ?", (context) -> {
+            System.out.println(System.currentTimeMillis());
+        });
     }
 
     @Override

@@ -14,8 +14,9 @@ repositories {
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 dependencies {
-    implementation fileTree(dir: "libs", includes: ["*.jar"])
-    implementation "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
+    compileOnly(fileTree(dir: "libs", includes: ["*.jar"]))
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly('org.quartz-scheduler:quartz:2.3.2')
 }
 
 processResources {
