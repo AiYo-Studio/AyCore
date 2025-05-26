@@ -2,13 +2,13 @@ plugins {
     id 'java'
     id 'signing'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.+'
 }
 
-version = "1.3.2-BETA"
+version = "1.4.0-BETA"
 group = "com.aystudio.core"
-archivesBaseName = "AyCore"
 
-subprojects {
+allprojects {
     apply plugin: 'java'
 
     repositories {
@@ -17,7 +17,9 @@ subprojects {
             url = "https://repo.mc9y.com/snapshots"
         }
     }
+}
 
+subprojects {
     dependencies {
         compileOnly("org.projectlombok:lombok:1.18.24")
         annotationProcessor("org.projectlombok:lombok:1.18.24")
@@ -25,12 +27,6 @@ subprojects {
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
-
-jar {
-    from project(':folia').sourceSets.main.output
-    from project(':bukkit').sourceSets.main.output
-    from project(':forge').sourceSets.main.output
-}
 
 subprojects.each { subproject -> evaluationDependsOn(subproject.path) }
 
@@ -41,6 +37,37 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
+
+dependencies {
+    implementation 'org.quartz-scheduler:quartz:2.3.2'
+}
+
+jar.enabled = false
+
+shadowJar {
+    archiveFileName = "AyCore-${version}.jar"
+
+    from project(':folia').sourceSets.main.output
+    from project(':bukkit').sourceSets.main.output
+    from project(':forge').sourceSets.main.output
+
+    relocate 'org.quartz', 'com.aystudio.core.libraries.quartz'
+    relocate 'org.terracotta', 'com.aystudio.core.libraries.terracotta'
+    relocate 'org.slf4j', 'com.aystudio.core.libraries.slf4j'
+
+    dependencies {
+        include(dependency("org.quartz-scheduler:quartz:2.3.2"))
+        include(dependency("org.slf4j:slf4j-api:1.7.21"))
+    }
+}
+
+tasks.shadowJar.dependsOn(
+        project(':folia').tasks.jar,
+        project(':bukkit').tasks.jar,
+        project(':forge').tasks.jar
+)
+
+tasks.build.dependsOn(tasks.shadowJar)
 
 publishing {
     publications {
