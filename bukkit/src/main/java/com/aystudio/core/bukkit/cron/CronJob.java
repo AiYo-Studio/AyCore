@@ -20,7 +20,6 @@ public class CronJob {
                 .build();
         JOB_WRAPPER_MAP.put(jobDetail.getKey().toString(), consumer);
         scheduler.scheduleJob(jobDetail, trigger);
-        System.out.println("成功启动: " + identity);
     }
 
     public static class JobWrapper implements Job {
@@ -29,9 +28,7 @@ public class CronJob {
         public void execute(JobExecutionContext context) {
             String key = context.getJobDetail().getKey().toString();
             Consumer<ContextWrapper> consumer = JOB_WRAPPER_MAP.getOrDefault(key, null);
-            System.out.println("Go: " + key);
             if (consumer != null) {
-                System.out.println("嗯？");
                 consumer.accept(new ContextWrapper(context));
             }
         }
