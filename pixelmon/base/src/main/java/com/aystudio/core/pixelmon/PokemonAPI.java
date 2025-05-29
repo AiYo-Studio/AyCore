@@ -68,12 +68,10 @@ public class PokemonAPI implements ILink {
         String path = null;
         switch (version) {
             case "v1_12_R1":
-                path = version;
-                this.pixelmonVersion = PixelmonVersionEnum.v1_12_R1;
-                break;
             case "v1_16_R3":
+            case "v1_21_R1":
                 path = version;
-                this.pixelmonVersion = PixelmonVersionEnum.v1_16_R3;
+                this.pixelmonVersion = PixelmonVersionEnum.valueOf(version);
                 break;
             default:
                 break;

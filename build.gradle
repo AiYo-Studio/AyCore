@@ -8,21 +8,15 @@ plugins {
 version = "1.4.0-BETA"
 group = "com.aystudio.core"
 
-allprojects {
+subprojects {
     apply plugin: 'java'
-
-    repositories {
-        maven {
-            name = "AyStudio-Repository"
-            url = "https://repo.mc9y.com/snapshots"
-        }
-    }
 }
 
-subprojects {
-    dependencies {
-        compileOnly("org.projectlombok:lombok:1.18.24")
-        annotationProcessor("org.projectlombok:lombok:1.18.24")
+repositories {
+    mavenCentral()
+    maven {
+        name = "AyStudio-Repository"
+        url = "https://repo.mc9y.com/snapshots"
     }
 }
 

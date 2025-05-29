@@ -1,11 +1,23 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
         maven { url = uri("https://maven.minecraftforge.net/") }
+        maven {
+            name = "NeoForged"
+            url = 'https://maven.neoforged.net/releases'
+            content {
+                includeGroup "net.neoforged"
+            }
+        }
     }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
 }
 
 rootProject.name = 'AyCore'
 
 include 'bukkit', 'folia', 'forge'
-include ':pixelmon:base', ':pixelmon:v1_12_R1', ':pixelmon:v1_16_R3'
+include ':pixelmon:base', ':pixelmon:v1_12_R1', ':pixelmon:v1_16_R3', ':pixelmon:v1_21_R1'

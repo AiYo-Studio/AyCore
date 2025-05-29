@@ -12,7 +12,11 @@ public interface IPokemonUtilWrapper {
 
     Pokemon spawnPokemon(Species es, Location location);
 
-    World getWorld(String worldName);
+    default World getWorld(String worldName) {
+        return null;
+    }
+
+    <T> T getWorldByName(String worldName);
 
     String getPokemonUID(Pokemon pokemon);
 

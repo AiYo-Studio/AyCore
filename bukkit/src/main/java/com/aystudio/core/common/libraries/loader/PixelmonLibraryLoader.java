@@ -25,6 +25,10 @@ public class PixelmonLibraryLoader {
                 this.url = generateUrl(baseUrl, "1.12.2");
                 this.fileName = "AyCore-Pixelmon-1.12.2-R0.1.jar";
                 break;
+            case "v1_21_R1":
+                this.url = generateUrl(baseUrl, "1.21.1");
+                this.fileName = "AyCore-Pixelmon-1.21.1-R0.1.jar";
+                break;
             default:
                 break;
         }

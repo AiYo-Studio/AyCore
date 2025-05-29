@@ -1,0 +1,111 @@
+import org.apache.tools.ant.filters.ReplaceTokens;
+
+plugins {
+    id 'signing'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.89'
+    id 'idea'
+}
+
+repositories {
+    maven {
+        url = 'https://maven.neoforged.net/releases'
+    }
+    maven {
+        name = "AyStudio-Repository"
+        url = "https://repo.mc9y.com/snapshots"
+    }
+    maven {
+        url = 'https://repo.codemc.io/repository/nms/'
+    }
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+group = "com.aystudio.core"
+version = "1.21.1-${rootProject.version}"
+archivesBaseName = "AyCore-Pixelmon"
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+}
+
+neoFormRuntime {
+    useEclipseCompiler = true
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        force 'org.ow2.asm:asm:9.7.1'
+        force 'org.ow2.asm:asm-commons:9.7.1'
+        force 'org.ow2.asm:asm-tree:9.7.1'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "${rootProject.projectDir}/libs/pixelmon/v1_21_1", includes: ["*.jar"])
+    implementation "com.aystudio.core:AyCore:1.4.0-BETA"
+    implementation(project(":pixelmon:base"))
+    implementation "org.spigotmc:spigot:1.21.1-R0.1-SNAPSHOT"
+    implementation "org.bukkit:bukkit:1.21.1-R0.1-SNAPSHOT"
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.yml'
+        filter ReplaceTokens, tokens: ["version": project.property("version")]
+        duplicatesStrategy DuplicatesStrategy.INCLUDE
+    }
+}
+
+processResources {
+    setFilteringCharset("UTF-8")
+    expand project.properties
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    archiveBaseName = "AyCore-Pixelmon"
+    from project(':pixelmon:base').sourceSets.main.output
+    exclude "**/com/pixelmonmod/**"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact("$buildDir/libs/${project.archivesBaseName}-${project.version}.jar")
+        }
+    }
+    repositories {
+        maven {
+            name = "ayStudioRepository"
+            url = "https://repo.mc9y.com/snapshots"
+            credentials {
+                username = findProperty("ayStudioRepositoryUsername")
+                password = findProperty("ayStudioRepositoryPassword")
+            }
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}

@@ -45,6 +45,11 @@ public class PokemonUtilWrapper implements IPokemonUtilWrapper {
     }
 
     @Override
+    public <T> T getWorldByName(String worldName) {
+        return (T) getWorld(worldName);
+    }
+
+    @Override
     public String getPokemonUID(Pokemon pokemon) {
         CompoundNBT nbt = new CompoundNBT();
         pokemon.writeToNBT(nbt);
