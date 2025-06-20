@@ -13,12 +13,17 @@ import org.magmafoundation.magma.api.events.ForgeEvents;
 public class MagmaModel extends AbstractForgeListenHandler {
 
     public MagmaModel() {
-        super("getForgeEvents", "org.magmafoundation.magma.api.events.ForgeEvents");
+        super("org.magmafoundation.magma.api.events.ForgeEvents");
     }
 
     @EventHandler
     public void onForgeEvent(ForgeEvents e) {
         ForgeEvent forgeEvent = new ForgeEvent(e.getForgeEvents());
         Bukkit.getPluginManager().callEvent(forgeEvent);
+    }
+
+    @Override
+    public net.minecraftforge.fml.common.eventhandler.Event convertEvent(Event event) {
+        return ((ForgeEvents) event).getForgeEvents();
     }
 }

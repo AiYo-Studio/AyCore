@@ -12,12 +12,17 @@ import org.bukkit.event.*;
 public class CatServerModel extends AbstractForgeListenHandler {
 
     public CatServerModel() {
-        super("getForgeEvent", "catserver.api.bukkit.event.ForgeEvent");
+        super("catserver.api.bukkit.event.ForgeEvent");
     }
 
     @EventHandler
     public void onListener(catserver.api.bukkit.event.ForgeEvent event) {
         ForgeEvent forgeEvent = new ForgeEvent(event.getForgeEvent());
         Bukkit.getPluginManager().callEvent(forgeEvent);
+    }
+
+    @Override
+    public net.minecraftforge.fml.common.eventhandler.Event convertEvent(Event event) {
+        return ((catserver.api.bukkit.event.ForgeEvent) event).getForgeEvent();
     }
 }

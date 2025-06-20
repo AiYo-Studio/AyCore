@@ -14,12 +14,17 @@ import red.mohist.api.event.BukkitHookForgeEvent;
 public class MohistModel extends AbstractForgeListenHandler {
 
     public MohistModel() {
-        super("getEvent", "red.mohist.api.event.BukkitHookForgeEvent");
+        super("red.mohist.api.event.BukkitHookForgeEvent");
     }
 
     @EventHandler
     public void onForgeEvent(BukkitHookForgeEvent e) {
         ForgeEvent forgeEvent = new ForgeEvent(e.getEvent());
         Bukkit.getPluginManager().callEvent(forgeEvent);
+    }
+
+    @Override
+    public net.minecraftforge.fml.common.eventhandler.Event convertEvent(Event event) {
+        return ((BukkitHookForgeEvent) event).getEvent();
     }
 }
