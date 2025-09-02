@@ -24,7 +24,7 @@ public class TextUtil {
     private static String colorOf(String color) {
         try {
             return ChatColor.of(color).toString();
-        } catch (Exception ignore) {
+        } catch (Throwable e) {
             return color;
         }
     }
