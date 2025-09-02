@@ -117,7 +117,7 @@ public class BasisDAO<T extends IEntity> {
                 if (data.isNewData()) {
                     statement.setString(1, data.getOwner());
                     statement.setString(2, text);
-                    data.setNewData(true);
+                    data.setNewData(false);
                 } else {
                     statement.setString(1, text);
                     statement.setString(2, data.getOwner());
