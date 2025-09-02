@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * @author Blank038
  */
+@Deprecated
 public class ThreadProcessor {
     public static Integer taskId = 0;
     public static final Map<Integer, BlankThread> THREAD_MAP = new HashMap<>();

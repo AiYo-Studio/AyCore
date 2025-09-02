@@ -3,6 +3,7 @@ package com.aystudio.core.bukkit.thread;
 /**
  * @author Blank038
  */
+@Deprecated
 public class BlankTask extends Thread {
     private final BlankThread TARGET_THREAD;
     private final int TASK_ID;

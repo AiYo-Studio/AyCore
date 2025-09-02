@@ -3,6 +3,7 @@ package com.aystudio.core.bukkit.thread;
 /**
  * @author Blank038
  */
+@Deprecated
 public class BlankThread implements ThreadInterface {
     private boolean isCancel;
     private final int tick;

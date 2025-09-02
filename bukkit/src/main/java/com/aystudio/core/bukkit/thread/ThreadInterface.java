@@ -3,6 +3,7 @@ package com.aystudio.core.bukkit.thread;
 /**
  * @author Blank038
  */
+@Deprecated
 public interface ThreadInterface extends Runnable {
 
     /**
