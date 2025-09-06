@@ -1,5 +1,6 @@
 package com.aystudio.core.pixelmon.api.i18n;
 
+import com.aystudio.core.common.data.CommonData;
 import com.google.common.collect.Maps;
 import com.aystudio.core.bukkit.AyCore;
 import com.aystudio.core.bukkit.util.custom.LoggerUtil;
@@ -7,6 +8,7 @@ import org.bukkit.ChatColor;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 /**
  * @author Blank038
@@ -23,6 +25,9 @@ public class PixelmonI18n {
             this.initializeConsumer.accept(lang);
             LoggerUtil.getOrRegister(AyCore.class).log("§f成功加载语言文件 " + ChatColor.GREEN + lang + " §f(" + values.size() + "个词条)");
         } catch (Exception e) {
+            if (CommonData.debug) {
+                AyCore.getInstance().getLogger().log(Level.WARNING, e, () -> "Failed to load language file");
+            }
             LoggerUtil.getOrRegister(AyCore.class).log(ChatColor.RED + "读取语言文件 " + ChatColor.WHITE + lang + ChatColor.RED + " 异常, 请检查文件是否正确!");
         }
     }
