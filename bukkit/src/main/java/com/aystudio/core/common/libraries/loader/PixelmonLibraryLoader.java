@@ -19,15 +19,15 @@ public class PixelmonLibraryLoader {
         switch (CommonData.coreVersion) {
             case "v1_16_R3":
                 this.url = generateUrl(baseUrl, "1.16.5");
-                this.fileName = "AyCore-Pixelmon-1.16.5-R0.1.jar";
+                this.fileName = "AyCore-Pixelmon-1.16.5-{version}.jar";
                 break;
             case "v1_12_R1":
                 this.url = generateUrl(baseUrl, "1.12.2");
-                this.fileName = "AyCore-Pixelmon-1.12.2-R0.1.jar";
+                this.fileName = "AyCore-Pixelmon-1.12.2-{version}.jar";
                 break;
             case "v1_21_R1":
                 this.url = generateUrl(baseUrl, "1.21.1");
-                this.fileName = "AyCore-Pixelmon-1.21.1-R0.1.jar";
+                this.fileName = "AyCore-Pixelmon-1.21.1-{version}.jar";
                 break;
             default:
                 break;
@@ -46,7 +46,9 @@ public class PixelmonLibraryLoader {
         }
         File folder = new File(AyCore.getInstance().getDataFolder(), "pixelmon");
         folder.mkdir();
-        File file = new File(folder, this.fileName);
+
+        String version = AyCore.getInstance().getDescription().getVersion();
+        File file = new File(folder, this.fileName.replace("{version}", version));
         new LibFileDownload(this.url, file).start();
     }
 }

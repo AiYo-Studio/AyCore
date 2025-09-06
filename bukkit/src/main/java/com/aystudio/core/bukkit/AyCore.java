@@ -141,6 +141,7 @@ public class AyCore extends AyPlugin {
         this.saveDefaultConfig();
         this.reloadConfig();
         CommonData.debug = this.getConfig().getBoolean("debug");
+        CommonData.dynamicLibrary = this.getConfig().getBoolean("dynamic-library");
     }
 
     public void init() {

@@ -1,6 +1,7 @@
 package com.aystudio.core.bukkit.util.file;
 
 import com.aystudio.core.bukkit.AyCore;
+import com.aystudio.core.common.data.CommonData;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,6 +26,10 @@ public class LibFileDownload {
     }
 
     public void start() {
+        if (!CommonData.dynamicLibrary && file.exists()) {
+            load();
+            return;
+        }
         try {
             URL url = new URL(this.url);
             URLConnection uc = url.openConnection();

@@ -20,3 +20,5 @@ text:
     false: "否"
 # 是否开启 debug
 debug: false
+# 动态依赖
+dynamic-library: true

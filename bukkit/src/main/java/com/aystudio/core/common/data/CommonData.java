@@ -5,5 +5,5 @@ package com.aystudio.core.common.data;
  */
 public class CommonData {
     public static String coreVersion;
-    public static boolean debug;
+    public static boolean debug, dynamicLibrary;
 }
