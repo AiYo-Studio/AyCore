@@ -103,11 +103,7 @@ public class AyCore extends AyPlugin {
             pokemonApi.onLoad();
         }
         // 检测 NMS 版本
-        if (this.nmsClass == null) {
-            this.getConsoleLogger().log("&f挂钩核心NMS: &c无挂钩");
-        } else {
-            this.getConsoleLogger().log("&f成功加载: &a" + nmsClass.getVID());
-        }
+        this.getConsoleLogger().log("&f成功加载: &a" + CommonData.currentVersion.name());
         // 统计和更新检测
         new Metrics(this);
         VerCheck check = new VerCheck(this, "https://www.mc9y.com/checks/{plugin}.txt");
@@ -149,11 +145,11 @@ public class AyCore extends AyPlugin {
         Bukkit.getPluginManager().registerEvents(new PluginStatusListener(), this);
         Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
         if (this.nmsClass == null) {
-            switch (CommonData.coreVersion) {
-                case "v1_12_R1":
+            switch (CommonData.currentVersion) {
+                case v1_12_R1:
                     this.setNMSClass(new v1_12_R1());
                     break;
-                case "v1_16_R1":
+                case v1_16_R3:
                     this.setNMSClass(new v1_16_R1());
                     break;
                 default:
