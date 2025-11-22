@@ -27,6 +27,12 @@ public class FoliaPlatformApi implements IPlatformApi {
     }
 
     @Override
+    public ITaskWrapper runTaskTimer(JavaPlugin plugin, Runnable runnable, long delay, long period) {
+        ScheduledTask task = Bukkit.getServer().getGlobalRegionScheduler().runAtFixedRate(plugin, (t) -> runnable.run(), delay, period);
+        return new FoliaTaskWrapper(task);
+    }
+
+    @Override
     public ITaskWrapper runTaskAsynchronously(JavaPlugin plugin, Runnable runnable) {
         ScheduledTask task = Bukkit.getServer().getAsyncScheduler().runNow(plugin, (t) -> runnable.run());
         return new FoliaTaskWrapper(task);
