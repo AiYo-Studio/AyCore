@@ -31,7 +31,7 @@ public class BasisDAO<T extends IEntity> {
         this.entityClass = entityClass;
         this.table = table;
         String[] sqlArray = {
-                "CREATE TABLE IF NOT EXISTS " + table + " (user VARCHAR(30) NOT NULL, data TEXT, locked INT, PRIMARY KEY ( user ))"
+                "CREATE TABLE IF NOT EXISTS " + table + " (user VARCHAR(30) NOT NULL, data TEXT, locked INT, PRIMARY KEY ( user )) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
         };
         this.storageHandler = new MySqlStorageHandler(plugin, url, user, password, sqlArray);
         this.storageHandler.setCheckConnection(true);
@@ -64,7 +64,8 @@ public class BasisDAO<T extends IEntity> {
                     String data = resultSet.getString("data");
                     if (data != null) {
                         FileConfiguration object = new YamlConfiguration();
-                        object.loadFromString(new String(Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8))));
+                        byte[] decoded = Base64.getDecoder().decode(data.getBytes(StandardCharsets.UTF_8));
+                        object.loadFromString(new String(decoded, StandardCharsets.UTF_8));
                         atomicReference.set(object);
                     }
                 }
