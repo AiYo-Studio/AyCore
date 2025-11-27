@@ -5,7 +5,6 @@ import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonFactory;
 import com.pixelmonmod.pixelmon.api.pokemon.species.Species;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.World;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.bukkit.Location;

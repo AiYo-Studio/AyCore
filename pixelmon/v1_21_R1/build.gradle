@@ -84,6 +84,7 @@ jar {
     archiveBaseName = "AyCore-Pixelmon"
     from project(':pixelmon:base').sourceSets.main.output
     exclude "**/com/pixelmonmod/**"
+    exclude "**/net/minecraft/**"
 }
 
 publishing {
