@@ -112,17 +112,12 @@ public class BasisDAO<T extends IEntity> {
     public void save(IEntity data, int locked) {
         FileConfiguration object = data.toYaml();
         String text = new String(Base64.getEncoder().encode(object.saveToString().getBytes(StandardCharsets.UTF_8)));
-        String sql = String.format(data.isNewData() ? "INSERT INTO " + table + " (user,data,locked) VALUES (?,?,%s)" : "UPDATE " + table + " SET data=?, locked='%s' WHERE user=?", locked);
+        String sql = "INSERT INTO " + table + "(user,data,locked) VALUES (?,?,?) ON DUPLICATE KEY UPDATE data=VALUES(data), locked=VALUES(locked);";
         this.storageHandler.connect((statement) -> {
             try {
-                if (data.isNewData()) {
-                    statement.setString(1, data.getOwner());
-                    statement.setString(2, text);
-                    data.setNewData(false);
-                } else {
-                    statement.setString(1, text);
-                    statement.setString(2, data.getOwner());
-                }
+                statement.setString(1, data.getOwner());
+                statement.setString(2, text);
+                statement.setInt(3, locked);
                 statement.executeUpdate();
             } catch (SQLException e) {
                 source.getLogger().log(Level.WARNING, e, () -> "Failed to save entity data");
