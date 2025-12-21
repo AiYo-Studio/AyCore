@@ -31,7 +31,7 @@ public class BasisDAO<T extends IEntity> {
         this.entityClass = entityClass;
         this.table = table;
         String[] sqlArray = {
-                "CREATE TABLE IF NOT EXISTS " + table + " (user VARCHAR(30) NOT NULL, data TEXT, locked INT, PRIMARY KEY ( user )) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+                "CREATE TABLE IF NOT EXISTS " + table + " (user VARCHAR(30) NOT NULL, data MEDIUMTEXT, locked INT, PRIMARY KEY ( user )) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
         };
         this.storageHandler = new MySqlStorageHandler(plugin, url, user, password, sqlArray);
         this.storageHandler.setCheckConnection(true);
